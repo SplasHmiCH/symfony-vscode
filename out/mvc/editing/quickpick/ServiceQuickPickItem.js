@@ -1,15 +1,23 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-class ServiceQuickPickItem {
-    constructor(serviceDefinition) {
+var ServiceQuickPickItem = /** @class */ (function () {
+    function ServiceQuickPickItem(serviceDefinition) {
         this.serviceDefinition = serviceDefinition;
     }
-    get label() {
-        return this.serviceDefinition.id;
-    }
-    get detail() {
-        return this.serviceDefinition.className;
-    }
-}
+    Object.defineProperty(ServiceQuickPickItem.prototype, "label", {
+        get: function () {
+            return this.serviceDefinition.id;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(ServiceQuickPickItem.prototype, "detail", {
+        get: function () {
+            return this.serviceDefinition.className;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    return ServiceQuickPickItem;
+}());
 exports.ServiceQuickPickItem = ServiceQuickPickItem;
-//# sourceMappingURL=ServiceQuickPickItem.js.map

@@ -1,18 +1,22 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-class PHPUse {
-    constructor(className, alias) {
+var PHPUse = /** @class */ (function () {
+    function PHPUse(className, alias) {
         this.className = className;
         this.alias = alias;
     }
-    get shortName() {
-        if (this.alias) {
-            return this.alias;
-        }
-        else {
-            return this.className.split('\\').pop();
-        }
-    }
-}
+    Object.defineProperty(PHPUse.prototype, "shortName", {
+        get: function () {
+            if (this.alias) {
+                return this.alias;
+            }
+            else {
+                return this.className.split('\\').pop();
+            }
+        },
+        enumerable: true,
+        configurable: true
+    });
+    return PHPUse;
+}());
 exports.PHPUse = PHPUse;
-//# sourceMappingURL=PHPUse.js.map

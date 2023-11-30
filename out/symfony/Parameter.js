@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-class Parameter {
-    constructor(name, value) {
+var Parameter = /** @class */ (function () {
+    function Parameter(name, value) {
         this.name = name;
         if (value === null) {
             this.value = "null";
@@ -22,7 +22,7 @@ class Parameter {
             this.value = typeof value;
         }
     }
-    acceptSearchCriteria(criteria) {
+    Parameter.prototype.acceptSearchCriteria = function (criteria) {
         if (this.name && this.name.match(criteria)) {
             return 2;
         }
@@ -30,10 +30,10 @@ class Parameter {
             return 2;
         }
         return 0;
-    }
-    static fromJSON(jsonParameter) {
+    };
+    Parameter.fromJSON = function (jsonParameter) {
         return new Parameter(jsonParameter.name, jsonParameter.value);
-    }
-}
+    };
+    return Parameter;
+}());
 exports.Parameter = Parameter;
-//# sourceMappingURL=Parameter.js.map

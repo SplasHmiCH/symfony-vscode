@@ -1,41 +1,54 @@
 "use strict";
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
 Object.defineProperty(exports, "__esModule", { value: true });
-const vscode = require("vscode");
-const AbstractContainerStoreListener_1 = require("../../symfony/AbstractContainerStoreListener");
-const AbstractContainerTreeItem_1 = require("./AbstractContainerTreeItem");
-class AbstractContainerViewProvider extends AbstractContainerStoreListener_1.AbstractContainerStoreListener {
-    constructor() {
-        super(...arguments);
-        this._onDidChangeTreeData = new vscode.EventEmitter();
-        this.onDidChangeTreeData = this._onDidChangeTreeData.event;
-        this._searchCriteria = false;
-        this._previousSearchCriteria = null;
+var vscode = require("vscode");
+var AbstractContainerStoreListener_1 = require("../../symfony/AbstractContainerStoreListener");
+var AbstractContainerTreeItem_1 = require("./AbstractContainerTreeItem");
+var AbstractContainerViewProvider = /** @class */ (function (_super) {
+    __extends(AbstractContainerViewProvider, _super);
+    function AbstractContainerViewProvider() {
+        var _this = _super.apply(this, arguments) || this;
+        _this._onDidChangeTreeData = new vscode.EventEmitter();
+        _this.onDidChangeTreeData = _this._onDidChangeTreeData.event;
+        _this._searchCriteria = false;
+        _this._previousSearchCriteria = null;
+        return _this;
     }
-    setCriteria(criteria) {
+    AbstractContainerViewProvider.prototype.setCriteria = function (criteria) {
         this._searchCriteria = criteria;
         if (criteria) {
             this._previousSearchCriteria = criteria;
         }
         this._onDidChangeTreeData.fire();
-    }
-    clearCriteria() {
+    };
+    AbstractContainerViewProvider.prototype.clearCriteria = function () {
         this.setCriteria(false);
-    }
-    acceptSearchable(searchable) {
+    };
+    AbstractContainerViewProvider.prototype.acceptSearchable = function (searchable) {
         return (false === this._searchCriteria || searchable.acceptSearchCriteria(this._searchCriteria.toString()) > 0);
-    }
-    getTreeItem(element) {
+    };
+    AbstractContainerViewProvider.prototype.getTreeItem = function (element) {
         return element;
-    }
-    _getSearchItemContext() {
+    };
+    AbstractContainerViewProvider.prototype._getSearchItemContext = function () {
         return null;
-    }
-    getChildren(element) {
-        return new Promise(resolve => {
+    };
+    AbstractContainerViewProvider.prototype.getChildren = function (element) {
+        var _this = this;
+        return new Promise(function (resolve) {
             if (!element) {
-                let result = [];
-                let containerTreeItems = this.getTreeItems();
-                containerTreeItems.sort((a, b) => {
+                var result = [];
+                var containerTreeItems = _this.getTreeItems();
+                containerTreeItems.sort(function (a, b) {
                     if (a.label < b.label) {
                         return -1;
                     }
@@ -44,10 +57,10 @@ class AbstractContainerViewProvider extends AbstractContainerStoreListener_1.Abs
                     }
                     return 0;
                 });
-                if (false !== this._searchCriteria) {
-                    let searchTreeItem = new vscode.TreeItem("Searching for : " + this._searchCriteria);
-                    if (this._getSearchItemContext()) {
-                        searchTreeItem.contextValue = this._getSearchItemContext();
+                if (false !== _this._searchCriteria) {
+                    var searchTreeItem = new vscode.TreeItem("Searching for : " + _this._searchCriteria);
+                    if (_this._getSearchItemContext()) {
+                        searchTreeItem.contextValue = _this._getSearchItemContext();
                     }
                     result.push(searchTreeItem);
                 }
@@ -62,10 +75,14 @@ class AbstractContainerViewProvider extends AbstractContainerStoreListener_1.Abs
                 }
             }
         });
-    }
-    get previousSearchCriteria() {
-        return this._previousSearchCriteria;
-    }
-}
+    };
+    Object.defineProperty(AbstractContainerViewProvider.prototype, "previousSearchCriteria", {
+        get: function () {
+            return this._previousSearchCriteria;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    return AbstractContainerViewProvider;
+}(AbstractContainerStoreListener_1.AbstractContainerStoreListener));
 exports.AbstractContainerViewProvider = AbstractContainerViewProvider;
-//# sourceMappingURL=AbstractContainerViewProvider.js.map

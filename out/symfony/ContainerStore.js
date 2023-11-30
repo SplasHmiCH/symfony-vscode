@@ -1,10 +1,10 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const vscode = require("vscode");
-const ConsoleContainerProvider_1 = require("./provider/ConsoleContainerProvider");
-const CacheContainerProvider_1 = require("./provider/CacheContainerProvider");
-class ContainerStore {
-    constructor(cacheManager) {
+var vscode = require("vscode");
+var ConsoleContainerProvider_1 = require("./provider/ConsoleContainerProvider");
+var CacheContainerProvider_1 = require("./provider/CacheContainerProvider");
+var ContainerStore = /** @class */ (function () {
+    function ContainerStore(cacheManager) {
         this._containerProviders = [];
         this._serviceDefinitionStore = [];
         this._routeDefinitionStore = [];
@@ -14,43 +14,44 @@ class ContainerStore {
         this._containerProviders.push(new CacheContainerProvider_1.CacheContainerProvider(cacheManager));
         this._containerProviders.push(new ConsoleContainerProvider_1.ConsoleContainerProvider());
     }
-    refreshAll() {
-        return new Promise((resolve, reject) => {
-            let hasValidProvider = this._containerProviders.some((provider) => {
+    ContainerStore.prototype.refreshAll = function () {
+        var _this = this;
+        return new Promise(function (resolve, reject) {
+            var hasValidProvider = _this._containerProviders.some(function (provider) {
                 if (provider.canProvideServiceDefinitions() && provider.canProvideRouteDefinitions() && provider.canProvideParameters()) {
-                    vscode.window.withProgress({ location: vscode.ProgressLocation.Window, title: ContainerStore.SERVICES_FETCH_MESSAGE }, (progress, token) => {
-                        return provider.provideServiceDefinitions().then(servicesDefinitions => {
-                            this._serviceDefinitionStore = servicesDefinitions;
-                            this._cacheManager.setServices(servicesDefinitions);
-                            this._listeners.forEach(listerner => {
+                    vscode.window.withProgress({ location: vscode.ProgressLocation.Window, title: ContainerStore.SERVICES_FETCH_MESSAGE }, function (progress, token) {
+                        return provider.provideServiceDefinitions().then(function (servicesDefinitions) {
+                            _this._serviceDefinitionStore = servicesDefinitions;
+                            _this._cacheManager.setServices(servicesDefinitions);
+                            _this._listeners.forEach(function (listerner) {
                                 listerner.onServicesChanges(servicesDefinitions);
                             });
-                            vscode.window.withProgress({ location: vscode.ProgressLocation.Window, title: ContainerStore.ROUTES_FETCH_MESSAGE }, (progress, token) => {
-                                return provider.provideRouteDefinitions().then(routeDefinitions => {
-                                    this._routeDefinitionStore = routeDefinitions;
-                                    this._cacheManager.setRoutes(routeDefinitions);
-                                    this._listeners.forEach(listerner => {
+                            vscode.window.withProgress({ location: vscode.ProgressLocation.Window, title: ContainerStore.ROUTES_FETCH_MESSAGE }, function (progress, token) {
+                                return provider.provideRouteDefinitions().then(function (routeDefinitions) {
+                                    _this._routeDefinitionStore = routeDefinitions;
+                                    _this._cacheManager.setRoutes(routeDefinitions);
+                                    _this._listeners.forEach(function (listerner) {
                                         listerner.onRoutesChanges(routeDefinitions);
                                     });
-                                    vscode.window.withProgress({ location: vscode.ProgressLocation.Window, title: ContainerStore.PARAMETERS_FETCH_MESSAGE }, (progress, token) => {
-                                        return provider.provideParameters().then(parameters => {
-                                            this._parameterStore = parameters;
-                                            this._cacheManager.setParameters(parameters);
-                                            this._listeners.forEach(listerner => {
+                                    vscode.window.withProgress({ location: vscode.ProgressLocation.Window, title: ContainerStore.PARAMETERS_FETCH_MESSAGE }, function (progress, token) {
+                                        return provider.provideParameters().then(function (parameters) {
+                                            _this._parameterStore = parameters;
+                                            _this._cacheManager.setParameters(parameters);
+                                            _this._listeners.forEach(function (listerner) {
                                                 listerner.onParametersChanges(parameters);
                                             });
                                             resolve();
-                                        }).catch(reason => {
+                                        }).catch(function (reason) {
                                             vscode.window.showErrorMessage(reason);
                                             reject();
                                         });
                                     });
-                                }).catch(reason => {
+                                }).catch(function (reason) {
                                     vscode.window.showErrorMessage(reason);
                                     reject();
                                 });
                             });
-                        }).catch(reason => {
+                        }).catch(function (reason) {
                             vscode.window.showErrorMessage(reason);
                             reject();
                         });
@@ -65,27 +66,29 @@ class ContainerStore {
                 vscode.window.showErrorMessage(ContainerStore.CONTAINER_NO_PROVIDER);
             }
         });
-    }
-    clearCacheAndRefreshAll() {
-        this._cacheManager.clearServices().then(() => {
-            this._cacheManager.clearRoutes().then(() => {
-                this._cacheManager.clearParameters().then(() => {
-                    this.refreshAll();
+    };
+    ContainerStore.prototype.clearCacheAndRefreshAll = function () {
+        var _this = this;
+        this._cacheManager.clearServices().then(function () {
+            _this._cacheManager.clearRoutes().then(function () {
+                _this._cacheManager.clearParameters().then(function () {
+                    _this.refreshAll();
                 });
             });
         });
-    }
-    refreshServiceDefinitions() {
-        let hasValidProvider = this._containerProviders.some(provider => {
+    };
+    ContainerStore.prototype.refreshServiceDefinitions = function () {
+        var _this = this;
+        var hasValidProvider = this._containerProviders.some(function (provider) {
             if (provider.canProvideServiceDefinitions()) {
-                vscode.window.withProgress({ location: vscode.ProgressLocation.Window, title: ContainerStore.SERVICES_FETCH_MESSAGE }, (progress, token) => {
-                    return provider.provideServiceDefinitions().then(servicesDefinitions => {
-                        this._serviceDefinitionStore = servicesDefinitions;
-                        this._cacheManager.setServices(servicesDefinitions);
-                        this._listeners.forEach(listener => {
+                vscode.window.withProgress({ location: vscode.ProgressLocation.Window, title: ContainerStore.SERVICES_FETCH_MESSAGE }, function (progress, token) {
+                    return provider.provideServiceDefinitions().then(function (servicesDefinitions) {
+                        _this._serviceDefinitionStore = servicesDefinitions;
+                        _this._cacheManager.setServices(servicesDefinitions);
+                        _this._listeners.forEach(function (listener) {
                             listener.onServicesChanges(servicesDefinitions);
                         });
-                    }).catch(reason => {
+                    }).catch(function (reason) {
                         vscode.window.showErrorMessage(reason);
                     });
                 });
@@ -98,23 +101,25 @@ class ContainerStore {
         if (!hasValidProvider) {
             vscode.window.showErrorMessage(ContainerStore.CONTAINER_NO_PROVIDER);
         }
-    }
-    clearCacheAndRefreshServices() {
-        this._cacheManager.clearServices().then(() => {
-            this.refreshServiceDefinitions();
+    };
+    ContainerStore.prototype.clearCacheAndRefreshServices = function () {
+        var _this = this;
+        this._cacheManager.clearServices().then(function () {
+            _this.refreshServiceDefinitions();
         });
-    }
-    refreshRouteDefinitions() {
-        let hasValidProvider = this._containerProviders.some(provider => {
+    };
+    ContainerStore.prototype.refreshRouteDefinitions = function () {
+        var _this = this;
+        var hasValidProvider = this._containerProviders.some(function (provider) {
             if (provider.canProvideRouteDefinitions()) {
-                vscode.window.withProgress({ location: vscode.ProgressLocation.Window, title: ContainerStore.ROUTES_FETCH_MESSAGE }, (progress, token) => {
-                    return provider.provideRouteDefinitions().then(routeDefinitions => {
-                        this._routeDefinitionStore = routeDefinitions;
-                        this._cacheManager.setRoutes(routeDefinitions);
-                        this._listeners.forEach(listener => {
+                vscode.window.withProgress({ location: vscode.ProgressLocation.Window, title: ContainerStore.ROUTES_FETCH_MESSAGE }, function (progress, token) {
+                    return provider.provideRouteDefinitions().then(function (routeDefinitions) {
+                        _this._routeDefinitionStore = routeDefinitions;
+                        _this._cacheManager.setRoutes(routeDefinitions);
+                        _this._listeners.forEach(function (listener) {
                             listener.onRoutesChanges(routeDefinitions);
                         });
-                    }).catch(reason => {
+                    }).catch(function (reason) {
                         vscode.window.showErrorMessage(reason);
                     });
                 });
@@ -127,23 +132,25 @@ class ContainerStore {
         if (!hasValidProvider) {
             vscode.window.showErrorMessage(ContainerStore.CONTAINER_NO_PROVIDER);
         }
-    }
-    clearCacheAndRefreshRoutes() {
-        this._cacheManager.clearRoutes().then(() => {
-            this.refreshRouteDefinitions();
+    };
+    ContainerStore.prototype.clearCacheAndRefreshRoutes = function () {
+        var _this = this;
+        this._cacheManager.clearRoutes().then(function () {
+            _this.refreshRouteDefinitions();
         });
-    }
-    refreshParameters() {
-        let hasValidProvider = this._containerProviders.some(provider => {
+    };
+    ContainerStore.prototype.refreshParameters = function () {
+        var _this = this;
+        var hasValidProvider = this._containerProviders.some(function (provider) {
             if (provider.canProvideParameters()) {
-                vscode.window.withProgress({ location: vscode.ProgressLocation.Window, title: ContainerStore.PARAMETERS_FETCH_MESSAGE }, (progress, token) => {
-                    return provider.provideParameters().then(parameters => {
-                        this._parameterStore = parameters;
-                        this._cacheManager.setParameters(parameters);
-                        this._listeners.forEach(listener => {
+                vscode.window.withProgress({ location: vscode.ProgressLocation.Window, title: ContainerStore.PARAMETERS_FETCH_MESSAGE }, function (progress, token) {
+                    return provider.provideParameters().then(function (parameters) {
+                        _this._parameterStore = parameters;
+                        _this._cacheManager.setParameters(parameters);
+                        _this._listeners.forEach(function (listener) {
                             listener.onParametersChanges(parameters);
                         });
-                    }).catch(reason => {
+                    }).catch(function (reason) {
                         vscode.window.showErrorMessage(reason);
                     });
                 });
@@ -156,28 +163,41 @@ class ContainerStore {
         if (!hasValidProvider) {
             vscode.window.showErrorMessage(ContainerStore.CONTAINER_NO_PROVIDER);
         }
-    }
-    clearCacheAndRefreshParameters() {
-        this._cacheManager.clearParameters().then(() => {
-            this.refreshParameters();
+    };
+    ContainerStore.prototype.clearCacheAndRefreshParameters = function () {
+        var _this = this;
+        this._cacheManager.clearParameters().then(function () {
+            _this.refreshParameters();
         });
-    }
-    subscribeListerner(listener) {
+    };
+    ContainerStore.prototype.subscribeListerner = function (listener) {
         this._listeners.push(listener);
-    }
-    get serviceDefinitionList() {
-        return this._serviceDefinitionStore;
-    }
-    get routeDefinitionList() {
-        return this._routeDefinitionStore;
-    }
-    get parameterList() {
-        return this._parameterStore;
-    }
-}
+    };
+    Object.defineProperty(ContainerStore.prototype, "serviceDefinitionList", {
+        get: function () {
+            return this._serviceDefinitionStore;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(ContainerStore.prototype, "routeDefinitionList", {
+        get: function () {
+            return this._routeDefinitionStore;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(ContainerStore.prototype, "parameterList", {
+        get: function () {
+            return this._parameterStore;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    return ContainerStore;
+}());
 ContainerStore.SERVICES_FETCH_MESSAGE = "Fetching Symfony services definitions...";
 ContainerStore.ROUTES_FETCH_MESSAGE = "Fetching Symfony routes definitions...";
 ContainerStore.PARAMETERS_FETCH_MESSAGE = "Fetching Symfony parameters...";
 ContainerStore.CONTAINER_NO_PROVIDER = "Cannot retrieve container elements at the moment";
 exports.ContainerStore = ContainerStore;
-//# sourceMappingURL=ContainerStore.js.map

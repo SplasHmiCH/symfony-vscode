@@ -1,13 +1,13 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-class RouteDefinition {
-    constructor(id, path, method, action) {
+var RouteDefinition = /** @class */ (function () {
+    function RouteDefinition(id, path, method, action) {
         this.id = id;
         this.path = path;
         this.method = method;
         this.action = action;
     }
-    acceptSearchCriteria(criteria) {
+    RouteDefinition.prototype.acceptSearchCriteria = function (criteria) {
         if (this.id && this.id.match(criteria)) {
             return 2;
         }
@@ -18,10 +18,10 @@ class RouteDefinition {
             return 2;
         }
         return 0;
-    }
-    static fromJSON(jsonRouteDefinition) {
+    };
+    RouteDefinition.fromJSON = function (jsonRouteDefinition) {
         return new RouteDefinition(jsonRouteDefinition.id, jsonRouteDefinition.path, jsonRouteDefinition.method, jsonRouteDefinition.action);
-    }
-}
+    };
+    return RouteDefinition;
+}());
 exports.RouteDefinition = RouteDefinition;
-//# sourceMappingURL=RouteDefinition.js.map

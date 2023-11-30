@@ -1,57 +1,57 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const ServiceDefinition_1 = require("./ServiceDefinition");
-const RouteDefinition_1 = require("./RouteDefinition");
-const Parameter_1 = require("./Parameter");
-class ContainerCacheManager {
-    constructor(memento) {
+var ServiceDefinition_1 = require("./ServiceDefinition");
+var RouteDefinition_1 = require("./RouteDefinition");
+var Parameter_1 = require("./Parameter");
+var ContainerCacheManager = /** @class */ (function () {
+    function ContainerCacheManager(memento) {
         this._memento = memento;
     }
-    hasCachedServices() {
+    ContainerCacheManager.prototype.hasCachedServices = function () {
         return this._memento.get(ContainerCacheManager.SERVICES_CACHE_KEY) !== undefined;
-    }
-    hasCachedRoutes() {
+    };
+    ContainerCacheManager.prototype.hasCachedRoutes = function () {
         return this._memento.get(ContainerCacheManager.ROUTES_CACHE_KEY) !== undefined;
-    }
-    hasCachedParameters() {
+    };
+    ContainerCacheManager.prototype.hasCachedParameters = function () {
         return this._memento.get(ContainerCacheManager.PARAMETERS_CACHE_KEY) !== undefined;
-    }
-    getServices() {
-        return this._memento.get(ContainerCacheManager.SERVICES_CACHE_KEY).map(jsonServiceDefinition => {
+    };
+    ContainerCacheManager.prototype.getServices = function () {
+        return this._memento.get(ContainerCacheManager.SERVICES_CACHE_KEY).map(function (jsonServiceDefinition) {
             return ServiceDefinition_1.ServiceDefinition.fromJSON(jsonServiceDefinition);
         });
-    }
-    getRoutes() {
-        return this._memento.get(ContainerCacheManager.ROUTES_CACHE_KEY).map(jsonRouteDefinition => {
+    };
+    ContainerCacheManager.prototype.getRoutes = function () {
+        return this._memento.get(ContainerCacheManager.ROUTES_CACHE_KEY).map(function (jsonRouteDefinition) {
             return RouteDefinition_1.RouteDefinition.fromJSON(jsonRouteDefinition);
         });
-    }
-    getParameters() {
-        return this._memento.get(ContainerCacheManager.PARAMETERS_CACHE_KEY).map(jsonParameter => {
+    };
+    ContainerCacheManager.prototype.getParameters = function () {
+        return this._memento.get(ContainerCacheManager.PARAMETERS_CACHE_KEY).map(function (jsonParameter) {
             return Parameter_1.Parameter.fromJSON(jsonParameter);
         });
-    }
-    setServices(servicesDefinitions) {
+    };
+    ContainerCacheManager.prototype.setServices = function (servicesDefinitions) {
         return this._memento.update(ContainerCacheManager.SERVICES_CACHE_KEY, servicesDefinitions);
-    }
-    setRoutes(routesDefinitions) {
+    };
+    ContainerCacheManager.prototype.setRoutes = function (routesDefinitions) {
         return this._memento.update(ContainerCacheManager.ROUTES_CACHE_KEY, routesDefinitions);
-    }
-    setParameters(parameters) {
+    };
+    ContainerCacheManager.prototype.setParameters = function (parameters) {
         return this._memento.update(ContainerCacheManager.PARAMETERS_CACHE_KEY, parameters);
-    }
-    clearServices() {
+    };
+    ContainerCacheManager.prototype.clearServices = function () {
         return this._memento.update(ContainerCacheManager.SERVICES_CACHE_KEY, undefined);
-    }
-    clearRoutes() {
+    };
+    ContainerCacheManager.prototype.clearRoutes = function () {
         return this._memento.update(ContainerCacheManager.ROUTES_CACHE_KEY, undefined);
-    }
-    clearParameters() {
+    };
+    ContainerCacheManager.prototype.clearParameters = function () {
         return this._memento.update(ContainerCacheManager.PARAMETERS_CACHE_KEY, undefined);
-    }
-}
+    };
+    return ContainerCacheManager;
+}());
 ContainerCacheManager.SERVICES_CACHE_KEY = "cached_container_store_services";
 ContainerCacheManager.ROUTES_CACHE_KEY = "cached_container_store_routes";
 ContainerCacheManager.PARAMETERS_CACHE_KEY = "cached_container_store_parameters";
 exports.ContainerCacheManager = ContainerCacheManager;
-//# sourceMappingURL=ContainerCacheManager.js.map

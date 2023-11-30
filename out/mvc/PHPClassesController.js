@@ -1,13 +1,14 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const vscode = require("vscode");
-class PHPClassesController {
-    constructor(phpClassStore) {
+var vscode = require("vscode");
+var PHPClassesController = /** @class */ (function () {
+    function PHPClassesController(phpClassStore) {
+        var _this = this;
         this._phpClassStore = phpClassStore;
-        vscode.commands.registerCommand('symfony-vscode.refreshPHPClasses', () => {
-            this._phpClassStore.clearCacheAndRefreshAll();
+        vscode.commands.registerCommand('symfony-vscode.refreshPHPClasses', function () {
+            _this._phpClassStore.clearCacheAndRefreshAll();
         });
     }
-}
+    return PHPClassesController;
+}());
 exports.PHPClassesController = PHPClassesController;
-//# sourceMappingURL=PHPClassesController.js.map

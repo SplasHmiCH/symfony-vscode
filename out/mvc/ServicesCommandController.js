@@ -1,26 +1,27 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const vscode = require("vscode");
-class ServicesCommandController {
-    constructor(containerStore, serviceDefinitionViewProvider) {
+var vscode = require("vscode");
+var ServicesCommandController = /** @class */ (function () {
+    function ServicesCommandController(containerStore, serviceDefinitionViewProvider) {
+        var _this = this;
         this._containerStore = containerStore;
         this._serviceDefinitionViewProvider = serviceDefinitionViewProvider;
-        vscode.commands.registerCommand('symfony-vscode.refreshServiceDefinitions', () => {
-            this._containerStore.clearCacheAndRefreshServices();
+        vscode.commands.registerCommand('symfony-vscode.refreshServiceDefinitions', function () {
+            _this._containerStore.clearCacheAndRefreshServices();
         });
-        vscode.commands.registerCommand('symfony-vscode.toggleClassDisplay', () => this._serviceDefinitionViewProvider.toggleClassDisplay());
-        vscode.commands.registerCommand('symfony-vscode.searchForServices', () => {
+        vscode.commands.registerCommand('symfony-vscode.toggleClassDisplay', function () { return _this._serviceDefinitionViewProvider.toggleClassDisplay(); });
+        vscode.commands.registerCommand('symfony-vscode.searchForServices', function () {
             vscode.window.showInputBox({
                 prompt: "Criteria (e.g. \"AppBundle\", \"acme.helper\" ...)",
-                value: this._serviceDefinitionViewProvider.previousSearchCriteria
-            }).then(criteria => {
+                value: _this._serviceDefinitionViewProvider.previousSearchCriteria
+            }).then(function (criteria) {
                 if (criteria !== undefined) {
-                    this._serviceDefinitionViewProvider.setCriteria(criteria);
+                    _this._serviceDefinitionViewProvider.setCriteria(criteria);
                 }
             });
         });
-        vscode.commands.registerCommand('symfony-vscode.clearServicesSearch', () => this._serviceDefinitionViewProvider.clearCriteria());
+        vscode.commands.registerCommand('symfony-vscode.clearServicesSearch', function () { return _this._serviceDefinitionViewProvider.clearCriteria(); });
     }
-}
+    return ServicesCommandController;
+}());
 exports.ServicesCommandController = ServicesCommandController;
-//# sourceMappingURL=ServicesCommandController.js.map

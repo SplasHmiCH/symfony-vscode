@@ -1,11 +1,11 @@
 {
-	"name": "symfony-vscode",
+	"name": "symfony-vscode-fixed",
 	"displayName": "Symfony for VSCode (fixed)",
 	"description": "Debug and autocomplete of Symfony container with Symfony 3+ and Shopware Support",
-	"version": "0.0.1",
+	"version": "0.0.2",
 	"publisher": "SplasHmiCH",
 	"repository": {
-		"url": "https://github.com/TheNouillet/symfony-vscode"
+		"url": "https://github.com/SplasHmiCH/splashmich.symfony-vscode"
 	},
 	"engines": {
 		"vscode": "^1.25.0"
@@ -287,23 +287,16 @@
 			}
 		}
 	},
-	"scripts": {
-		"vscode:prepublish": "npm run compile",
-		"compile": "tsc -p ./",
-		"watch": "tsc -watch -p ./",
-		"postinstall": "node ./node_modules/vscode/bin/install",
-		"test": "npm run compile && node ./node_modules/vscode/bin/test"
-	},
 	"devDependencies": {
 		"@types/mocha": "^2.2.42",
 		"@types/node": "^7.0.43",
-		"typescript": "^2.6.1",
+		"typescript": "^2.9.2",
 		"vscode": "^1.1.6"
 	},
 	"dependencies": {
 		"graceful-fs": "^4.1.15",
-		"strip-json-comments": "^2.0.1",
-		"php-parser": "^3.0.0-prerelease.7"
+		"php-parser": "^3.0.0-prerelease.7",
+		"strip-json-comments": "^2.0.1"
 	},
 	"__metadata": {
 		"id": "4fae2874-c714-444f-901c-fe6f17905a3d",
