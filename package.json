@@ -296,7 +296,13 @@
         "typescript": "^5.4.3"
     },
     "scripts": {
-        "package": "vsce package"
+        "vscode:package": "vsce package",
+        "vscode:prepublish": "yarn run compile",
+        "compile": "tsc -p ./",
+        "watch": "tsc -watch -p ./",
+        "postinstall": "yarn ./node_modules/vscode/bin/install",
+        "test": "yarn run compile && yarn ./node_modules/vscode/bin/test",
+        "publish": "vsce publish"
     },
     "dependencies": {
         "graceful-fs": "^4.1.15",

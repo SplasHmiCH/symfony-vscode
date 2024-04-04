@@ -6,7 +6,7 @@ I fixed some bugs I encountered due to updates and changes in the way Symfony wo
 
 This extension aims to help developing Symfony**3**+ projects, by providing basic autocompletion and visualization of the Symfony container.
 
-![Autocomplete](https://github.com/TheNouillet/symfony-vscode/raw/master/media/autocomplete.gif)
+![Autocomplete](https://github.com/SplasHmiCH/splashmich.symfony-vscode/blob/main/media/autocomplete.gif?raw=true)
 
 ## Features
 
@@ -17,7 +17,7 @@ This extension provides the following features :
 * Go to implementation of a service
 * A custom view to visualize the current project container, with services, routes and parameters
 
-![Debug view](https://github.com/TheNouillet/symfony-vscode/raw/master/media/view.gif)
+![Debug view](https://github.com/SplasHmiCH/splashmich.symfony-vscode/blob/main/media/view.gif?raw=true)
 
 ## How does it works ?
 
@@ -44,15 +44,15 @@ Here are the settings that can be overridden for convenience :
 
 ## Various environments
 
-If your Symfony app is not running on a conventional installation (for example, you are running a Symfony app on a Docker container), you can find different configuration recipes [here](https://github.com/TheNouillet/symfony-vscode/blob/master/ENVIRONMENTS.md).
+If your Symfony app is not running on a conventional installation (for example, you are running a Symfony app on a Docker container), you can find different configuration recipes [here](https://github.com/SplasHmiCH/splashmich.symfony-vscode/blob/main/ENVIRONMENTS.md).
 
 ## Contribution
 
-If you want to contribute to this extension, everything you want to know is [here](https://github.com/TheNouillet/symfony-vscode/blob/master/CONTRIBUTING.md).
+If you want to contribute to this extension, everything you want to know is [here](https://github.com/SplasHmiCH/splashmich.symfony-vscode/blob/main/CONTRIBUTING.md).
 
 ## Release Notes
 
-See [the changelog](https://github.com/TheNouillet/symfony-vscode/blob/master/CHANGELOG.md) for releases notes.
+See [the changelog](https://github.com/SplasHmiCH/splashmich.symfony-vscode/blob/main/CHANGELOG.md) for releases notes.
 
 ## Acknowledgments
 

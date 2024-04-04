@@ -26,17 +26,17 @@ Note that if your Symfony app is not running on a conventionnal installation (Do
 To contribute to this extension, you must have the following tools :
 
 * Git (obviously)
-* NodeJS (>= 8.11)
-* npm (>= 5.6)
+* Node (>= v20.12.0)
+* yarn (>= 1.22.19)
 
 If you want to have a better understanding of extension authoring, [the documentation is your first stop](https://code.visualstudio.com/api).
 
 ### Installation
 
 ```bash
-git clone https://github.com/TheNouillet/symfony-vscode.git
-npm install --no-save
-npm run compile
+git clone https://github.com/SplasHmiCH/splashmich.symfony-vscode.git
+yarn install
+yarn run compile
 ```
 
 ### Watching
@@ -44,7 +44,7 @@ npm run compile
 For developpement, it's easier to watch the files with :
 
 ```bash
-npm run watch
+yarn run watch
 ```
 
 ### Creating the VSIX file
@@ -52,13 +52,13 @@ npm run watch
 VSIX file allows you to install the extension on VSCode. For this, you have to install the `vsce` utility :
 
 ```bash
-npm install -g vsce
+yarn install
 ```
 
 To create a VSIX file, you can use this command :
 
 ```bash
-vsce package
+yarn vscode:package
 ```
 
 Make sure that your dependencies are up-to-date before packaging the extension.
