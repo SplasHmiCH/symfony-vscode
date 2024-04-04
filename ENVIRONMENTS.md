@@ -12,7 +12,6 @@ You have to change the PHP path if you're working on Windows :
 }
 ```
 
-
 ## Docker
 
 [Docker](https://www.docker.com/) is used to perform containerization.
