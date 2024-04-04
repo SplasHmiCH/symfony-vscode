@@ -1,21 +1,22 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-var PHPServiceCompletionItem_1 = require("./PHPServiceCompletionItem");
-var PHPServiceProvider = /** @class */ (function () {
-    function PHPServiceProvider(containerStore) {
+exports.PHPServiceProvider = void 0;
+const PHPServiceCompletionItem_1 = require("./PHPServiceCompletionItem");
+class PHPServiceProvider {
+    constructor(containerStore) {
         this._containerStore = containerStore;
     }
-    PHPServiceProvider.prototype.provideCompletionItems = function (document, position, token, context) {
-        var result = [];
-        var serviceDefinitions = this._containerStore.serviceDefinitionList;
-        serviceDefinitions.forEach(function (serviceDefinition) {
+    provideCompletionItems(document, position, token, context) {
+        let result = [];
+        let serviceDefinitions = this._containerStore.serviceDefinitionList;
+        serviceDefinitions.forEach(serviceDefinition => {
             if (serviceDefinition.public) {
-                var item = new PHPServiceCompletionItem_1.PHPServiceCompletionItem(serviceDefinition);
+                let item = new PHPServiceCompletionItem_1.PHPServiceCompletionItem(serviceDefinition);
                 result.push(item);
             }
         });
         return result;
-    };
-    return PHPServiceProvider;
-}());
+    }
+}
 exports.PHPServiceProvider = PHPServiceProvider;
+//# sourceMappingURL=PHPServiceProvider.js.map

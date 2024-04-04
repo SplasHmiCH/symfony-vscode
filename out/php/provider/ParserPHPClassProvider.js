@@ -1,13 +1,14 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-var vscode = require("vscode");
-var PHPClass_1 = require("../PHPClass");
-var php_parser_1 = require("php-parser");
-var graceful_fs_1 = require("graceful-fs");
-var PromiseUtils_1 = require("../PromiseUtils");
-var PHPUse_1 = require("../PHPUse");
-var ParserPHPClassProvider = /** @class */ (function () {
-    function ParserPHPClassProvider() {
+exports.ParserPHPClassProvider = void 0;
+const vscode = require("vscode");
+const PHPClass_1 = require("../PHPClass");
+const php_parser_1 = require("php-parser");
+const graceful_fs_1 = require("graceful-fs");
+const PromiseUtils_1 = require("../PromiseUtils");
+const PHPUse_1 = require("../PHPUse");
+class ParserPHPClassProvider {
+    constructor() {
         this._configuration = vscode.workspace.getConfiguration("symfony-vscode");
         this._engine = new php_parser_1.default({
             parser: {
@@ -18,46 +19,44 @@ var ParserPHPClassProvider = /** @class */ (function () {
             }
         });
     }
-    ParserPHPClassProvider.prototype.canUpdateAllUris = function () {
+    canUpdateAllUris() {
         return true;
-    };
-    ParserPHPClassProvider.prototype.canUpdateUri = function (uri) {
+    }
+    canUpdateUri(uri) {
         return true;
-    };
-    ParserPHPClassProvider.prototype.updateAllUris = function () {
-        var _this = this;
-        return new Promise(function (resolve, reject) {
-            vscode.workspace.findFiles("**/*.php").then(function (uris) {
-                var ps = [];
-                uris.forEach(function (uri) {
-                    ps.push(function () { return _this.updateUri(uri); });
+    }
+    updateAllUris() {
+        return new Promise((resolve, reject) => {
+            vscode.workspace.findFiles("**/*.php").then(uris => {
+                let ps = [];
+                uris.forEach(uri => {
+                    ps.push(() => this.updateUri(uri));
                 });
-                PromiseUtils_1.PromiseUtils.throttleActions(ps, _this._getParserThrottle()).then(function (phpClassesArray) {
-                    var resultArray = [];
-                    phpClassesArray.map(function (phpClasses) {
-                        var filteredArray = phpClasses.filter(function (phpClass) {
+                PromiseUtils_1.PromiseUtils.throttleActions(ps, this._getParserThrottle()).then(phpClassesArray => {
+                    let resultArray = [];
+                    phpClassesArray.map(phpClasses => {
+                        let filteredArray = phpClasses.filter(phpClass => {
                             return phpClass !== null;
                         });
                         resultArray = resultArray.concat(filteredArray);
                     });
                     resolve(resultArray);
-                }).catch(function (reason) {
+                }).catch(reason => {
                     reject(reason);
                 });
             });
         });
-    };
-    ParserPHPClassProvider.prototype.updateUri = function (uri) {
-        var _this = this;
-        return new Promise(function (resolve) {
-            graceful_fs_1.readFile(uri.fsPath, function (err, data) {
+    }
+    updateUri(uri) {
+        return new Promise((resolve) => {
+            (0, graceful_fs_1.readFile)(uri.fsPath, (err, data) => {
                 if (err) {
                     resolve([]);
                 }
                 else {
                     try {
-                        var ast = _this._engine.parseCode(data.toString());
-                        resolve(_this._hydratePHPClass(ast, uri));
+                        let ast = this._engine.parseCode(data.toString());
+                        resolve(this._hydratePHPClass(ast, uri));
                     }
                     catch (e) {
                         resolve([]);
@@ -65,15 +64,15 @@ var ParserPHPClassProvider = /** @class */ (function () {
                 }
             });
         });
-    };
-    ParserPHPClassProvider.prototype._hydratePHPClass = function (ast, uri) {
+    }
+    _hydratePHPClass(ast, uri) {
         try {
-            var result = [];
-            var children = ast.children;
-            var nextElementsToProcess = children;
-            var currentElement = null;
-            var currentNamespace = null;
-            var uses_1 = [];
+            let result = [];
+            let children = ast.children;
+            let nextElementsToProcess = children;
+            let currentElement = null;
+            let currentNamespace = null;
+            let uses = [];
             while (nextElementsToProcess.length > 0) {
                 currentElement = nextElementsToProcess.shift();
                 if (currentElement.kind === "namespace") {
@@ -81,23 +80,23 @@ var ParserPHPClassProvider = /** @class */ (function () {
                     nextElementsToProcess = currentElement.children;
                 }
                 if (currentElement.kind === "usegroup") {
-                    uses_1 = uses_1.concat(this._processUseGroup(currentElement));
+                    uses = uses.concat(this._processUseGroup(currentElement));
                 }
                 if (currentElement.kind === "class" || currentElement.kind === "interface") {
                     result.push(this._processClass(currentElement, uri, currentNamespace));
                 }
             }
-            result.forEach(function (phpClass) {
-                phpClass.uses = uses_1;
+            result.forEach(phpClass => {
+                phpClass.uses = uses;
             });
             return result;
         }
         catch (e) {
             return [];
         }
-    };
-    ParserPHPClassProvider.prototype._processClass = function (element, uri, namespace) {
-        var fullName = null;
+    }
+    _processClass(element, uri, namespace) {
+        let fullName = null;
         if (typeof element.name === "object") {
             fullName = element.name.name;
         }
@@ -107,25 +106,25 @@ var ParserPHPClassProvider = /** @class */ (function () {
         if (namespace) {
             fullName = namespace + '\\' + fullName;
         }
-        var phpClass = new PHPClass_1.PHPClass(fullName, uri);
-        element.body.forEach(function (classElement) {
+        let phpClass = new PHPClass_1.PHPClass(fullName, uri);
+        element.body.forEach(classElement => {
             if (classElement.kind === "method") {
                 phpClass.addMethod(classElement.name.name);
             }
         });
         phpClass.classPosition = new vscode.Position(element.loc.start.line, element.loc.start.column);
         return phpClass;
-    };
-    ParserPHPClassProvider.prototype._processUseGroup = function (element) {
-        var result = [];
-        element.items.forEach(function (item) {
+    }
+    _processUseGroup(element) {
+        let result = [];
+        element.items.forEach(item => {
             result.push(new PHPUse_1.PHPUse(item.name, item.alias));
         });
         return result;
-    };
-    ParserPHPClassProvider.prototype._getParserThrottle = function () {
+    }
+    _getParserThrottle() {
         return this._configuration.get("phpParserThrottle");
-    };
-    return ParserPHPClassProvider;
-}());
+    }
+}
 exports.ParserPHPClassProvider = ParserPHPClassProvider;
+//# sourceMappingURL=ParserPHPClassProvider.js.map

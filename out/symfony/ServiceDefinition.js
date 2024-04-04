@@ -1,16 +1,17 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-var ServiceDefinition = /** @class */ (function () {
-    function ServiceDefinition(id, className, isPublic, alias) {
+exports.ServiceDefinition = void 0;
+class ServiceDefinition {
+    constructor(id, className, isPublic, alias) {
         this.id = id;
         this.className = className;
         this.public = isPublic;
         this.alias = alias;
     }
-    ServiceDefinition.prototype.isServiceIdAClassName = function () {
+    isServiceIdAClassName() {
         return this.id.match(/([A-Z]|\\)/) !== null;
-    };
-    ServiceDefinition.prototype.acceptSearchCriteria = function (criteria) {
+    }
+    acceptSearchCriteria(criteria) {
         if (this.id && this.id.match(criteria)) {
             return 2;
         }
@@ -21,10 +22,10 @@ var ServiceDefinition = /** @class */ (function () {
             return 1;
         }
         return 0;
-    };
-    ServiceDefinition.fromJSON = function (jsonServiceDefinition) {
+    }
+    static fromJSON(jsonServiceDefinition) {
         return new ServiceDefinition(jsonServiceDefinition.id, jsonServiceDefinition.className, jsonServiceDefinition.public, jsonServiceDefinition.alias);
-    };
-    return ServiceDefinition;
-}());
+    }
+}
 exports.ServiceDefinition = ServiceDefinition;
+//# sourceMappingURL=ServiceDefinition.js.map

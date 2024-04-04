@@ -1,10 +1,11 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-var vscode = require("vscode");
-var ParserPHPClassProvider_1 = require("./provider/ParserPHPClassProvider");
-var CachePHPClassProvider_1 = require("./provider/CachePHPClassProvider");
-var PHPClassStore = /** @class */ (function () {
-    function PHPClassStore(cacheManager) {
+exports.PHPClassStore = void 0;
+const vscode = require("vscode");
+const ParserPHPClassProvider_1 = require("./provider/ParserPHPClassProvider");
+const CachePHPClassProvider_1 = require("./provider/CachePHPClassProvider");
+class PHPClassStore {
+    constructor(cacheManager) {
         this._phpClassProviders = [];
         this._phpClassesIndex = new Map();
         this._phpUsesIndex = new Map();
@@ -12,21 +13,20 @@ var PHPClassStore = /** @class */ (function () {
         this._phpClassProviders.push(new CachePHPClassProvider_1.CachePHPClassProvider(cacheManager));
         this._phpClassProviders.push(new ParserPHPClassProvider_1.ParserPHPClassProvider());
     }
-    PHPClassStore.prototype.refreshAll = function () {
-        var _this = this;
+    refreshAll() {
         this._phpClassesIndex.clear();
-        var hasValidProvider = this._phpClassProviders.some(function (provider) {
+        let hasValidProvider = this._phpClassProviders.some(provider => {
             if (provider.canUpdateAllUris()) {
-                vscode.window.withProgress({ location: vscode.ProgressLocation.Window, title: PHPClassStore.PHP_CLASS_FETCH_MESSAGE }, function (progress, token) {
-                    return provider.updateAllUris().then(function (phpClasses) {
-                        phpClasses.forEach(function (phpClass) {
-                            _this._phpClassesIndex.set(phpClass.className, phpClass);
+                vscode.window.withProgress({ location: vscode.ProgressLocation.Window, title: PHPClassStore.PHP_CLASS_FETCH_MESSAGE }, (progress, token) => {
+                    return provider.updateAllUris().then(phpClasses => {
+                        phpClasses.forEach(phpClass => {
+                            this._phpClassesIndex.set(phpClass.className, phpClass);
                             if (phpClass.uses.length > 0) {
-                                _this._phpUsesIndex.set(phpClass.documentUri.fsPath, phpClass.uses);
+                                this._phpUsesIndex.set(phpClass.documentUri.fsPath, phpClass.uses);
                             }
                         });
-                        _this._cacheManager.set(phpClasses);
-                    }).catch(function (reason) {
+                        this._cacheManager.set(phpClasses);
+                    }).catch(reason => {
                         vscode.window.showErrorMessage(reason);
                     });
                 });
@@ -39,27 +39,25 @@ var PHPClassStore = /** @class */ (function () {
         if (!hasValidProvider) {
             vscode.window.showErrorMessage(PHPClassStore.PHP_CLASS_NO_PROVIDER);
         }
-    };
-    PHPClassStore.prototype.clearCacheAndRefreshAll = function () {
-        var _this = this;
-        this._cacheManager.clear().then(function () {
-            _this.refreshAll();
+    }
+    clearCacheAndRefreshAll() {
+        this._cacheManager.clear().then(() => {
+            this.refreshAll();
         });
-    };
-    PHPClassStore.prototype.refresh = function (uri) {
-        var _this = this;
-        var hasValidProvider = this._phpClassProviders.some(function (provider) {
+    }
+    refresh(uri) {
+        let hasValidProvider = this._phpClassProviders.some(provider => {
             if (provider.canUpdateUri(uri)) {
-                provider.updateUri(uri).then(function (phpClasses) {
-                    phpClasses.forEach(function (phpClass) {
-                        _this._phpClassesIndex.set(phpClass.className, phpClass);
+                provider.updateUri(uri).then(phpClasses => {
+                    phpClasses.forEach(phpClass => {
+                        this._phpClassesIndex.set(phpClass.className, phpClass);
                         if (phpClass.uses.length > 0) {
-                            _this._phpUsesIndex.set(phpClass.documentUri.fsPath, phpClass.uses);
+                            this._phpUsesIndex.set(phpClass.documentUri.fsPath, phpClass.uses);
                         }
                     });
                 });
-                var phpClasses = Array.from(_this._phpClassesIndex.values());
-                _this._cacheManager.set(phpClasses);
+                let phpClasses = Array.from(this._phpClassesIndex.values());
+                this._cacheManager.set(phpClasses);
                 return true;
             }
             else {
@@ -69,21 +67,20 @@ var PHPClassStore = /** @class */ (function () {
         if (!hasValidProvider) {
             vscode.window.showErrorMessage(PHPClassStore.PHP_CLASS_NO_PROVIDER);
         }
-    };
-    PHPClassStore.prototype.clearCacheAndRefresh = function (uri) {
-        var _this = this;
-        this._cacheManager.clearClassByUri(uri).then(function () {
-            _this.refresh(uri);
+    }
+    clearCacheAndRefresh(uri) {
+        this._cacheManager.clearClassByUri(uri).then(() => {
+            this.refresh(uri);
         });
-    };
-    PHPClassStore.prototype.getPhpClass = function (className) {
+    }
+    getPhpClass(className) {
         return this._phpClassesIndex.get(className);
-    };
-    PHPClassStore.prototype.getUsesForUri = function (uri) {
+    }
+    getUsesForUri(uri) {
         return this._phpUsesIndex.get(uri.fsPath);
-    };
-    return PHPClassStore;
-}());
+    }
+}
+exports.PHPClassStore = PHPClassStore;
 PHPClassStore.PHP_CLASS_FETCH_MESSAGE = "Fetching PHP classes...";
 PHPClassStore.PHP_CLASS_NO_PROVIDER = "Cannot retrieve PHP classes at the moment";
-exports.PHPClassStore = PHPClassStore;
+//# sourceMappingURL=PHPClassStore.js.map

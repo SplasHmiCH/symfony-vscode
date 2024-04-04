@@ -1,27 +1,27 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-var vscode = require("vscode");
-var RoutesCommandController = /** @class */ (function () {
-    function RoutesCommandController(containerStore, routeDefintionViewProvider) {
-        var _this = this;
+exports.RoutesCommandController = void 0;
+const vscode = require("vscode");
+class RoutesCommandController {
+    constructor(containerStore, routeDefintionViewProvider) {
         this._containerStore = containerStore;
         this._routeDefinitionViewProvider = routeDefintionViewProvider;
-        vscode.commands.registerCommand('symfony-vscode.refreshRouteDefinitions', function () {
-            _this._containerStore.clearCacheAndRefreshRoutes();
+        vscode.commands.registerCommand('symfony-vscode.refreshRouteDefinitions', () => {
+            this._containerStore.clearCacheAndRefreshRoutes();
         });
-        vscode.commands.registerCommand('symfony-vscode.togglePathDisplay', function () { return _this._routeDefinitionViewProvider.togglePathsDisplay(); });
-        vscode.commands.registerCommand('symfony-vscode.searchForRoutes', function () {
+        vscode.commands.registerCommand('symfony-vscode.togglePathDisplay', () => this._routeDefinitionViewProvider.togglePathsDisplay());
+        vscode.commands.registerCommand('symfony-vscode.searchForRoutes', () => {
             vscode.window.showInputBox({
                 prompt: "Criteria (e.g. \"AppBundle\", \"product\" ...)",
-                value: _this._routeDefinitionViewProvider.previousSearchCriteria
-            }).then(function (criteria) {
+                value: this._routeDefinitionViewProvider.previousSearchCriteria
+            }).then(criteria => {
                 if (criteria !== undefined) {
-                    _this._routeDefinitionViewProvider.setCriteria(criteria);
+                    this._routeDefinitionViewProvider.setCriteria(criteria);
                 }
             });
         });
-        vscode.commands.registerCommand('symfony-vscode.clearRoutesSearch', function () { return _this._routeDefinitionViewProvider.clearCriteria(); });
+        vscode.commands.registerCommand('symfony-vscode.clearRoutesSearch', () => this._routeDefinitionViewProvider.clearCriteria());
     }
-    return RoutesCommandController;
-}());
+}
 exports.RoutesCommandController = RoutesCommandController;
+//# sourceMappingURL=RoutesCommandController.js.map

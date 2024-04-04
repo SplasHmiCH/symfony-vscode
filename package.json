@@ -1,311 +1,316 @@
 {
-	"name": "symfony-vscode-fixed",
-	"displayName": "Symfony for VSCode (fixed)",
-	"description": "Debug and autocomplete of Symfony container with Symfony 3+ and Shopware Support",
-	"version": "0.0.2",
-	"publisher": "SplasHmiCH",
-	"repository": {
-		"url": "https://github.com/SplasHmiCH/splashmich.symfony-vscode"
-	},
-	"engines": {
-		"vscode": "^1.25.0"
-	},
-	"icon": "media/symfony.png",
-	"categories": [
-		"Other"
-	],
-	"activationEvents": [
-		"workspaceContains:**/composer.json"
-	],
-	"main": "./out/extension",
-	"contributes": {
-		"viewsContainers": {
-			"activitybar": [
-				{
-					"id": "symfonyViewsContainer",
-					"title": "Symfony container view",
-					"icon": "media/logo.svg"
-				}
-			]
-		},
-		"views": {
-			"symfonyViewsContainer": [
-				{
-					"id": "parametersView",
-					"name": "Parameters view"
-				},
-				{
-					"id": "routeDefinitionsView",
-					"name": "Routes definitions view"
-				},
-				{
-					"id": "serviceDefinitionsView",
-					"name": "Services definitions view"
-				}
-			]
-		},
-		"commands": [
-			{
-				"command": "symfony-vscode.refreshServiceDefinitions",
-				"title": "Refresh container services definitions",
-				"category": "Symfony"
-			},
-			{
-				"command": "symfony-vscode.searchForServices",
-				"title": "Search for Symfony services in the services view",
-				"category": "Symfony",
-				"icon": {
-					"light": "media/light/search.svg",
-					"dark": "media/dark/search.svg"
-				}
-			},
-			{
-				"command": "symfony-vscode.clearServicesSearch",
-				"title": "Clear the services search criteria",
-				"category": "Symfony",
-				"icon": {
-					"light": "media/light/cancel.svg",
-					"dark": "media/dark/cancel.svg"
-				}
-			},
-			{
-				"command": "symfony-vscode.goToServiceDefinition",
-				"title": "Go to service definition",
-				"category": "Symfony",
-				"icon": {
-					"light": "media/light/goto.svg",
-					"dark": "media/dark/goto.svg"
-				}
-			},
-			{
-				"command": "symfony-vscode.refreshRouteDefinitions",
-				"title": "Refresh container routes definitions",
-				"category": "Symfony"
-			},
-			{
-				"command": "symfony-vscode.searchForRoutes",
-				"title": "Search for Symfony routes in the routes view",
-				"category": "Symfony",
-				"icon": {
-					"light": "media/light/search.svg",
-					"dark": "media/dark/search.svg"
-				}
-			},
-			{
-				"command": "symfony-vscode.clearRoutesSearch",
-				"title": "Clear the routes search criteria",
-				"category": "Symfony",
-				"icon": {
-					"light": "media/light/cancel.svg",
-					"dark": "media/dark/cancel.svg"
-				}
-			},
-			{
-				"command": "symfony-vscode.refreshParameters",
-				"title": "Refresh container parameters",
-				"category": "Symfony"
-			},
-			{
-				"command": "symfony-vscode.searchForParameters",
-				"title": "Search for Symfony parameters in the parameters view",
-				"category": "Symfony",
-				"icon": {
-					"light": "media/light/search.svg",
-					"dark": "media/dark/search.svg"
-				}
-			},
-			{
-				"command": "symfony-vscode.clearParametersSearch",
-				"title": "Clear the parameters search criteria",
-				"category": "Symfony",
-				"icon": {
-					"light": "media/light/cancel.svg",
-					"dark": "media/dark/cancel.svg"
-				}
-			},
-			{
-				"command": "symfony-vscode.refreshContainer",
-				"title": "Refresh the entire container",
-				"category": "Symfony"
-			},
-			{
-				"command": "symfony-vscode.toggleClassDisplay",
-				"title": "Toggle class/id display for services",
-				"category": "Symfony"
-			},
-			{
-				"command": "symfony-vscode.togglePathDisplay",
-				"title": "Toggle path/id display for routes",
-				"category": "Symfony"
-			},
-			{
-				"command": "symfony-vscode.refreshPHPClasses",
-				"title": "Reindex PHP classes",
-				"category": "Symfony"
-			}
-		],
-		"menus": {
-			"view/title": [
-				{
-					"command": "symfony-vscode.refreshServiceDefinitions",
-					"when": "view == serviceDefinitionsView",
-					"group": "2_workspace@1"
-				},
-				{
-					"command": "symfony-vscode.toggleClassDisplay",
-					"when": "view == serviceDefinitionsView",
-					"group": "2_workspace@2"
-				},
-				{
-					"command": "symfony-vscode.searchForServices",
-					"when": "view == serviceDefinitionsView",
-					"group": "navigation"
-				},
-				{
-					"command": "symfony-vscode.refreshRouteDefinitions",
-					"when": "view == routeDefinitionsView",
-					"group": "2_workspace@1"
-				},
-				{
-					"command": "symfony-vscode.togglePathDisplay",
-					"when": "view == routeDefinitionsView",
-					"group": "2_workspace@2"
-				},
-				{
-					"command": "symfony-vscode.searchForRoutes",
-					"when": "view == routeDefinitionsView",
-					"group": "navigation"
-				},
-				{
-					"command": "symfony-vscode.refreshParameters",
-					"when": "view == parametersView",
-					"group": "2_workspace@1"
-				},
-				{
-					"command": "symfony-vscode.searchForParameters",
-					"when": "view == parametersView",
-					"group": "navigation"
-				}
-			],
-			"view/item/context": [
-				{
-					"command": "symfony-vscode.clearServicesSearch",
-					"when": "viewItem == symfony-vscode.searchItem.service",
-					"group": "inline"
-				},
-				{
-					"command": "symfony-vscode.clearRoutesSearch",
-					"when": "viewItem == symfony-vscode.searchItem.route",
-					"group": "inline"
-				},
-				{
-					"command": "symfony-vscode.clearParametersSearch",
-					"when": "viewItem == symfony-vscode.searchItem.parameter",
-					"group": "inline"
-				},
-				{
-					"command": "symfony-vscode.goToServiceDefinition",
-					"when": "viewItem == symfony-vscode.service",
-					"group": "inline"
-				}
-			]
-		},
-		"configuration": {
-			"title": "Symfony for VSCode",
-			"properties": {
-				"symfony-vscode.phpExecutablePath": {
-					"type": "string",
-					"default": "/usr/bin/php",
-					"description": "Path to the PHP executable. This path is ignored if the symfony-vscode.shellExecutable parameter is different than false"
-				},
-				"symfony-vscode.shellExecutable": {
-					"type": "string",
-					"default": false,
-					"description": "The shell executable path. If differant that false, console commands will be called via shell instead of just calling the PHP executable."
-				},
-				"symfony-vscode.shellCommand": {
-					"type": "string",
-					"default": false,
-					"description": "The shell command. Only used when calling the shell to do console commands."
-				},
-				"symfony-vscode.consolePath": {
-					"type": [
-						"string",
-						"null"
-					],
-					"default": null,
-					"description": "Path to the Symfony console, relative to the root directeory. If null, the extension try to guess the path with the Symfony version from the composer.json file"
-				},
-				"symfony-vscode.showConsoleErrors": {
-					"type": "boolean",
-					"default": true,
-					"description": "If false, the extension doesn't show error messages caused by compilation errors."
-				},
-				"symfony-vscode.enableFileWatching": {
-					"type": "boolean",
-					"default": true,
-					"description": "If false, the extension refresh automatically when a YAML file is modified"
-				},
-				"symfony-vscode.fileWatchingPatterns": {
-					"type": "array",
-					"default": [
-						"yml",
-						"yaml",
-						"xml"
-					],
-					"description": "Files with one of these extensions will trigger a container refresh on save"
-				},
-				"symfony-vscode.servicesFilters": {
-					"type": "object",
-					"default": {
-						"[a-f0-9]{64}_[0-9]+": "id",
-						"~": "id",
-						"instanceof\\.": "id"
-					},
-					"description": "Filter out services entirely when they match one of the given regexes. Useful for auto-generated services. Use \"id\" to filter out services by id, or \"class\" by extended class name"
-				},
-				"symfony-vscode.routesFilters": {
-					"type": "object",
-					"default": {
-						"^_assetic_": "id"
-					},
-					"description": "Filter out routes entirely when they match one of the given regexes. Useful for auto-generated routes. Use \"id\" to filter out routes by id, or \"path\" by route path"
-				},
-				"symfony-vscode.parametersFilters": {
-					"type": "array",
-					"default": [
-						"\\.class$",
-						"_class$"
-					],
-					"description": "Filter out parameters entirely when their ids match one of the given regexes."
-				},
-				"symfony-vscode.phpParserThrottle": {
-					"type": "number",
-					"default": 256,
-					"description": "Maximum number of process capable of reading PHP files. Too much processes can block file reading of other extensions and programs"
-				}
-			}
-		}
-	},
-	"devDependencies": {
-		"@types/mocha": "^2.2.42",
-		"@types/node": "^7.0.43",
-		"typescript": "^2.9.2",
-		"vscode": "^1.1.6"
-	},
-	"dependencies": {
-		"graceful-fs": "^4.1.15",
-		"php-parser": "^3.0.0-prerelease.7",
-		"strip-json-comments": "^2.0.1"
-	},
-	"__metadata": {
-		"id": "4fae2874-c714-444f-901c-fe6f17905a3d",
-		"publisherId": "70657fb0-9394-4f17-ba48-4f4c1de5fc44",
-		"publisherDisplayName": "TheNouillet",
-		"targetPlatform": "undefined",
-		"updated": false,
-		"isPreReleaseVersion": false,
-		"installedTimestamp": 1701338158967,
-		"preRelease": false
-	}
+    "name": "symfony-vscode-fixed",
+    "displayName": "Symfony for VSCode (fixed)",
+    "description": "Debug and autocomplete of Symfony container with Symfony 3+ and Shopware Support",
+    "version": "0.0.4",
+    "publisher": "SplasHmiCH",
+    "repository": {
+        "url": "https://github.com/SplasHmiCH/splashmich.symfony-vscode"
+    },
+    "engines": {
+        "vscode": "^1.76.0"
+    },
+    "icon": "media/symfony.png",
+    "categories": [
+        "Other"
+    ],
+    "activationEvents": [
+        "workspaceContains:**/composer.json"
+    ],
+    "main": "./out/extension",
+    "contributes": {
+        "viewsContainers": {
+            "activitybar": [
+                {
+                    "id": "symfonyViewsContainer",
+                    "title": "Symfony container view",
+                    "icon": "media/logo.svg"
+                }
+            ]
+        },
+        "views": {
+            "symfonyViewsContainer": [
+                {
+                    "id": "parametersView",
+                    "name": "Parameters view"
+                },
+                {
+                    "id": "routeDefinitionsView",
+                    "name": "Routes definitions view"
+                },
+                {
+                    "id": "serviceDefinitionsView",
+                    "name": "Services definitions view"
+                }
+            ]
+        },
+        "commands": [
+            {
+                "command": "symfony-vscode.refreshServiceDefinitions",
+                "title": "Refresh container services definitions",
+                "category": "Symfony"
+            },
+            {
+                "command": "symfony-vscode.searchForServices",
+                "title": "Search for Symfony services in the services view",
+                "category": "Symfony",
+                "icon": {
+                    "light": "media/light/search.svg",
+                    "dark": "media/dark/search.svg"
+                }
+            },
+            {
+                "command": "symfony-vscode.clearServicesSearch",
+                "title": "Clear the services search criteria",
+                "category": "Symfony",
+                "icon": {
+                    "light": "media/light/cancel.svg",
+                    "dark": "media/dark/cancel.svg"
+                }
+            },
+            {
+                "command": "symfony-vscode.goToServiceDefinition",
+                "title": "Go to service definition",
+                "category": "Symfony",
+                "icon": {
+                    "light": "media/light/goto.svg",
+                    "dark": "media/dark/goto.svg"
+                }
+            },
+            {
+                "command": "symfony-vscode.refreshRouteDefinitions",
+                "title": "Refresh container routes definitions",
+                "category": "Symfony"
+            },
+            {
+                "command": "symfony-vscode.searchForRoutes",
+                "title": "Search for Symfony routes in the routes view",
+                "category": "Symfony",
+                "icon": {
+                    "light": "media/light/search.svg",
+                    "dark": "media/dark/search.svg"
+                }
+            },
+            {
+                "command": "symfony-vscode.clearRoutesSearch",
+                "title": "Clear the routes search criteria",
+                "category": "Symfony",
+                "icon": {
+                    "light": "media/light/cancel.svg",
+                    "dark": "media/dark/cancel.svg"
+                }
+            },
+            {
+                "command": "symfony-vscode.refreshParameters",
+                "title": "Refresh container parameters",
+                "category": "Symfony"
+            },
+            {
+                "command": "symfony-vscode.searchForParameters",
+                "title": "Search for Symfony parameters in the parameters view",
+                "category": "Symfony",
+                "icon": {
+                    "light": "media/light/search.svg",
+                    "dark": "media/dark/search.svg"
+                }
+            },
+            {
+                "command": "symfony-vscode.clearParametersSearch",
+                "title": "Clear the parameters search criteria",
+                "category": "Symfony",
+                "icon": {
+                    "light": "media/light/cancel.svg",
+                    "dark": "media/dark/cancel.svg"
+                }
+            },
+            {
+                "command": "symfony-vscode.refreshContainer",
+                "title": "Refresh the entire container",
+                "category": "Symfony"
+            },
+            {
+                "command": "symfony-vscode.toggleClassDisplay",
+                "title": "Toggle class/id display for services",
+                "category": "Symfony"
+            },
+            {
+                "command": "symfony-vscode.togglePathDisplay",
+                "title": "Toggle path/id display for routes",
+                "category": "Symfony"
+            },
+            {
+                "command": "symfony-vscode.refreshPHPClasses",
+                "title": "Reindex PHP classes",
+                "category": "Symfony"
+            }
+        ],
+        "menus": {
+            "view/title": [
+                {
+                    "command": "symfony-vscode.refreshServiceDefinitions",
+                    "when": "view == serviceDefinitionsView",
+                    "group": "2_workspace@1"
+                },
+                {
+                    "command": "symfony-vscode.toggleClassDisplay",
+                    "when": "view == serviceDefinitionsView",
+                    "group": "2_workspace@2"
+                },
+                {
+                    "command": "symfony-vscode.searchForServices",
+                    "when": "view == serviceDefinitionsView",
+                    "group": "navigation"
+                },
+                {
+                    "command": "symfony-vscode.refreshRouteDefinitions",
+                    "when": "view == routeDefinitionsView",
+                    "group": "2_workspace@1"
+                },
+                {
+                    "command": "symfony-vscode.togglePathDisplay",
+                    "when": "view == routeDefinitionsView",
+                    "group": "2_workspace@2"
+                },
+                {
+                    "command": "symfony-vscode.searchForRoutes",
+                    "when": "view == routeDefinitionsView",
+                    "group": "navigation"
+                },
+                {
+                    "command": "symfony-vscode.refreshParameters",
+                    "when": "view == parametersView",
+                    "group": "2_workspace@1"
+                },
+                {
+                    "command": "symfony-vscode.searchForParameters",
+                    "when": "view == parametersView",
+                    "group": "navigation"
+                }
+            ],
+            "view/item/context": [
+                {
+                    "command": "symfony-vscode.clearServicesSearch",
+                    "when": "viewItem == symfony-vscode.searchItem.service",
+                    "group": "inline"
+                },
+                {
+                    "command": "symfony-vscode.clearRoutesSearch",
+                    "when": "viewItem == symfony-vscode.searchItem.route",
+                    "group": "inline"
+                },
+                {
+                    "command": "symfony-vscode.clearParametersSearch",
+                    "when": "viewItem == symfony-vscode.searchItem.parameter",
+                    "group": "inline"
+                },
+                {
+                    "command": "symfony-vscode.goToServiceDefinition",
+                    "when": "viewItem == symfony-vscode.service",
+                    "group": "inline"
+                }
+            ]
+        },
+        "configuration": {
+            "title": "Symfony for VSCode",
+            "properties": {
+                "symfony-vscode.phpExecutablePath": {
+                    "type": "string",
+                    "default": "/usr/bin/php",
+                    "description": "Path to the PHP executable. This path is ignored if the symfony-vscode.shellExecutable parameter is different than false"
+                },
+                "symfony-vscode.shellExecutable": {
+                    "type": "string",
+                    "default": false,
+                    "description": "The shell executable path. If differant that false, console commands will be called via shell instead of just calling the PHP executable."
+                },
+                "symfony-vscode.shellCommand": {
+                    "type": "string",
+                    "default": false,
+                    "description": "The shell command. Only used when calling the shell to do console commands."
+                },
+                "symfony-vscode.consolePath": {
+                    "type": [
+                        "string",
+                        "null"
+                    ],
+                    "default": null,
+                    "description": "Path to the Symfony console, relative to the root directeory. If null, the extension try to guess the path with the Symfony version from the composer.json file"
+                },
+                "symfony-vscode.showConsoleErrors": {
+                    "type": "boolean",
+                    "default": true,
+                    "description": "If false, the extension doesn't show error messages caused by compilation errors."
+                },
+                "symfony-vscode.enableFileWatching": {
+                    "type": "boolean",
+                    "default": true,
+                    "description": "If false, the extension refresh automatically when a YAML file is modified"
+                },
+                "symfony-vscode.fileWatchingPatterns": {
+                    "type": "array",
+                    "default": [
+                        "yml",
+                        "yaml",
+                        "xml"
+                    ],
+                    "description": "Files with one of these extensions will trigger a container refresh on save"
+                },
+                "symfony-vscode.servicesFilters": {
+                    "type": "object",
+                    "default": {
+                        "[a-f0-9]{64}_[0-9]+": "id",
+                        "~": "id",
+                        "instanceof\\.": "id"
+                    },
+                    "description": "Filter out services entirely when they match one of the given regexes. Useful for auto-generated services. Use \"id\" to filter out services by id, or \"class\" by extended class name"
+                },
+                "symfony-vscode.routesFilters": {
+                    "type": "object",
+                    "default": {
+                        "^_assetic_": "id"
+                    },
+                    "description": "Filter out routes entirely when they match one of the given regexes. Useful for auto-generated routes. Use \"id\" to filter out routes by id, or \"path\" by route path"
+                },
+                "symfony-vscode.parametersFilters": {
+                    "type": "array",
+                    "default": [
+                        "\\.class$",
+                        "_class$"
+                    ],
+                    "description": "Filter out parameters entirely when their ids match one of the given regexes."
+                },
+                "symfony-vscode.phpParserThrottle": {
+                    "type": "number",
+                    "default": 256,
+                    "description": "Maximum number of process capable of reading PHP files. Too much processes can block file reading of other extensions and programs"
+                }
+            }
+        }
+    },
+    "devDependencies": {
+        "@types/mocha": "^10.0.1",
+        "@types/node": "^18.11.9",
+        "@types/vscode": "^1.76.0",
+        "@vscode/test-electron": "^2.3.0",
+        "@vscode/vsce": "^2.24.0",
+        "typescript": "^5.4.3"
+    },
+    "scripts": {
+        "package": "vsce package"
+    },
+    "dependencies": {
+        "graceful-fs": "^4.1.15",
+        "php-parser": "^3.0.0-prerelease.7",
+        "strip-json-comments": "^2.0.1"
+    },
+    "__metadata": {
+        "id": "4fae2874-c714-444f-901c-fe6f17905a3d",
+        "publisherId": "70657fb0-9394-4f17-ba48-4f4c1de5fc44",
+        "publisherDisplayName": "TheNouillet",
+        "targetPlatform": "undefined",
+        "updated": false,
+        "isPreReleaseVersion": false,
+        "installedTimestamp": 1701338158967,
+        "preRelease": false
+    }
 }
