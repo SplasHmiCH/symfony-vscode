@@ -1,54 +1,52 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-var CacheContainerProvider = /** @class */ (function () {
-    function CacheContainerProvider(cacheManager) {
+exports.CacheContainerProvider = void 0;
+class CacheContainerProvider {
+    constructor(cacheManager) {
         this._cacheManager = cacheManager;
     }
-    CacheContainerProvider.prototype.canProvideServiceDefinitions = function () {
+    canProvideServiceDefinitions() {
         return this._cacheManager.hasCachedServices();
-    };
-    CacheContainerProvider.prototype.canProvideRouteDefinitions = function () {
+    }
+    canProvideRouteDefinitions() {
         return this._cacheManager.hasCachedRoutes();
-    };
-    CacheContainerProvider.prototype.canProvideParameters = function () {
+    }
+    canProvideParameters() {
         return this._cacheManager.hasCachedParameters();
-    };
-    CacheContainerProvider.prototype.provideServiceDefinitions = function () {
-        var _this = this;
-        return new Promise(function (resolve, reject) {
-            if (_this._cacheManager.hasCachedServices()) {
-                resolve(_this._cacheManager.getServices());
+    }
+    provideServiceDefinitions() {
+        return new Promise((resolve, reject) => {
+            if (this._cacheManager.hasCachedServices()) {
+                resolve(this._cacheManager.getServices());
             }
             else {
                 reject(CacheContainerProvider.NO_SERVICES_IN_CACHE);
             }
         });
-    };
-    CacheContainerProvider.prototype.provideRouteDefinitions = function () {
-        var _this = this;
-        return new Promise(function (resolve, reject) {
-            if (_this._cacheManager.hasCachedRoutes()) {
-                resolve(_this._cacheManager.getRoutes());
+    }
+    provideRouteDefinitions() {
+        return new Promise((resolve, reject) => {
+            if (this._cacheManager.hasCachedRoutes()) {
+                resolve(this._cacheManager.getRoutes());
             }
             else {
                 reject(CacheContainerProvider.NO_ROUTES_IN_CACHE);
             }
         });
-    };
-    CacheContainerProvider.prototype.provideParameters = function () {
-        var _this = this;
-        return new Promise(function (resolve, reject) {
-            if (_this._cacheManager.hasCachedParameters()) {
-                resolve(_this._cacheManager.getParameters());
+    }
+    provideParameters() {
+        return new Promise((resolve, reject) => {
+            if (this._cacheManager.hasCachedParameters()) {
+                resolve(this._cacheManager.getParameters());
             }
             else {
                 reject(CacheContainerProvider.NO_PARAMETERS_IN_CACHE);
             }
         });
-    };
-    return CacheContainerProvider;
-}());
+    }
+}
+exports.CacheContainerProvider = CacheContainerProvider;
 CacheContainerProvider.NO_SERVICES_IN_CACHE = "No services in cache";
 CacheContainerProvider.NO_ROUTES_IN_CACHE = "No routes in cache";
 CacheContainerProvider.NO_PARAMETERS_IN_CACHE = "No parameters in cache";
-exports.CacheContainerProvider = CacheContainerProvider;
+//# sourceMappingURL=CacheContainerProvider.js.map

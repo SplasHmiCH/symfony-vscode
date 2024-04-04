@@ -1,35 +1,34 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-var vscode = require("vscode");
-var FileWatchController = /** @class */ (function () {
-    function FileWatchController(containerStore, phpClassStore) {
-        var _a;
-        var _this = this;
+exports.FileWatchController = void 0;
+const vscode = require("vscode");
+class FileWatchController {
+    constructor(containerStore, phpClassStore) {
         this._configuration = vscode.workspace.getConfiguration("symfony-vscode");
         this._containerStore = containerStore;
         this._phpClassStore = phpClassStore;
-        var fileNameRegExp = this._getFileNameRegExp();
-        var subscriptions = [];
-        vscode.workspace.onDidSaveTextDocument(function (e) {
+        let fileNameRegExp = this._getFileNameRegExp();
+        let subscriptions = [];
+        vscode.workspace.onDidSaveTextDocument(e => {
             if (e.fileName.match(fileNameRegExp)) {
-                _this._containerStore.clearCacheAndRefreshAll();
+                this._containerStore.clearCacheAndRefreshAll();
             }
             if (e.fileName.match(/\.php$/)) {
-                _this._phpClassStore.clearCacheAndRefresh(e.uri);
+                this._phpClassStore.clearCacheAndRefresh(e.uri);
             }
         }, this, subscriptions);
-        this._disposable = (_a = vscode.Disposable).from.apply(_a, subscriptions);
+        this._disposable = vscode.Disposable.from(...subscriptions);
     }
-    FileWatchController.prototype._getFileNameRegExp = function () {
-        var extensions = this._configuration.get('fileWatchingPatterns');
-        extensions = extensions.map(function (ext) {
+    _getFileNameRegExp() {
+        let extensions = this._configuration.get('fileWatchingPatterns');
+        extensions = extensions.map((ext) => {
             return '.' + ext;
         });
         return new RegExp("(" + extensions.join('|') + ")$");
-    };
-    FileWatchController.prototype.dispose = function () {
+    }
+    dispose() {
         this._disposable.dispose();
-    };
-    return FileWatchController;
-}());
+    }
+}
 exports.FileWatchController = FileWatchController;
+//# sourceMappingURL=FileWatchController.js.map

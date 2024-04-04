@@ -1,22 +1,23 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-var vscode = require("vscode");
-var EditingUtils_1 = require("../EditingUtils");
-var ContainerHoverProvider = /** @class */ (function () {
-    function ContainerHoverProvider(containerStore) {
+exports.ContainerHoverProvider = void 0;
+const vscode = require("vscode");
+const EditingUtils_1 = require("../EditingUtils");
+class ContainerHoverProvider {
+    constructor(containerStore) {
         this._containerStore = containerStore;
     }
-    ContainerHoverProvider.prototype.provideHover = function (document, position, token) {
-        var wordRange = EditingUtils_1.EditingUtils.getWordRange(document, position);
-        var hoveredWord = document.getText(wordRange);
-        var serviceDefinition = this._containerStore.serviceDefinitionList.find(function (serviceDefinition) {
+    provideHover(document, position, token) {
+        let wordRange = EditingUtils_1.EditingUtils.getWordRange(document, position);
+        let hoveredWord = document.getText(wordRange);
+        let serviceDefinition = this._containerStore.serviceDefinitionList.find(serviceDefinition => {
             return hoveredWord === serviceDefinition.id;
         });
         if (serviceDefinition !== undefined) {
             return new vscode.Hover(serviceDefinition.className, wordRange);
         }
         else {
-            var parameterDefinition = this._containerStore.parameterList.find(function (parameterDefinition) {
+            let parameterDefinition = this._containerStore.parameterList.find(parameterDefinition => {
                 return hoveredWord === parameterDefinition.name;
             });
             if (parameterDefinition !== undefined) {
@@ -26,7 +27,7 @@ var ContainerHoverProvider = /** @class */ (function () {
                 return null;
             }
         }
-    };
-    return ContainerHoverProvider;
-}());
+    }
+}
 exports.ContainerHoverProvider = ContainerHoverProvider;
+//# sourceMappingURL=ContainerHoverProvider.js.map

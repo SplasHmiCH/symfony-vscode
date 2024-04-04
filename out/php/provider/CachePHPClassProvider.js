@@ -1,32 +1,32 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-var CachePHPClassProvider = /** @class */ (function () {
-    function CachePHPClassProvider(cacheManager) {
+exports.CachePHPClassProvider = void 0;
+class CachePHPClassProvider {
+    constructor(cacheManager) {
         this._cacheManager = cacheManager;
     }
-    CachePHPClassProvider.prototype.canUpdateAllUris = function () {
+    canUpdateAllUris() {
         return this._cacheManager.hasCachedData();
-    };
-    CachePHPClassProvider.prototype.canUpdateUri = function (uri) {
+    }
+    canUpdateUri(uri) {
         return false;
-    };
-    CachePHPClassProvider.prototype.updateAllUris = function () {
-        var _this = this;
-        return new Promise(function (resolve, reject) {
-            if (_this._cacheManager.hasCachedData()) {
-                resolve(_this._cacheManager.get());
+    }
+    updateAllUris() {
+        return new Promise((resolve, reject) => {
+            if (this._cacheManager.hasCachedData()) {
+                resolve(this._cacheManager.get());
             }
             else {
                 reject(CachePHPClassProvider.NO_CLASS_IN_CACHE);
             }
         });
-    };
-    CachePHPClassProvider.prototype.updateUri = function (uri) {
-        return new Promise(function (resolve) {
+    }
+    updateUri(uri) {
+        return new Promise((resolve) => {
             resolve([]);
         });
-    };
-    return CachePHPClassProvider;
-}());
-CachePHPClassProvider.NO_CLASS_IN_CACHE = "No cached classes";
+    }
+}
 exports.CachePHPClassProvider = CachePHPClassProvider;
+CachePHPClassProvider.NO_CLASS_IN_CACHE = "No cached classes";
+//# sourceMappingURL=CachePHPClassProvider.js.map

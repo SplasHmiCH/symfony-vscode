@@ -1,37 +1,20 @@
 "use strict";
-var __extends = (this && this.__extends) || (function () {
-    var extendStatics = Object.setPrototypeOf ||
-        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
-    return function (d, b) {
-        extendStatics(d, b);
-        function __() { this.constructor = d; }
-        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-    };
-})();
 Object.defineProperty(exports, "__esModule", { value: true });
-var vscode = require("vscode");
-var ParameterCompletionItem = /** @class */ (function (_super) {
-    __extends(ParameterCompletionItem, _super);
-    function ParameterCompletionItem(parameter) {
-        var _this = _super.call(this, parameter.name, vscode.CompletionItemKind.Property) || this;
-        _this.parameter = parameter;
-        return _this;
+exports.ParameterCompletionItem = void 0;
+const vscode = require("vscode");
+class ParameterCompletionItem extends vscode.CompletionItem {
+    constructor(parameter) {
+        super(parameter.name, vscode.CompletionItemKind.Property);
+        this.parameter = parameter;
     }
-    Object.defineProperty(ParameterCompletionItem.prototype, "detail", {
-        get: function () {
-            return this.parameter.name;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(ParameterCompletionItem.prototype, "documentation", {
-        get: function () {
-            return "Of value : " + this.parameter.value;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    return ParameterCompletionItem;
-}(vscode.CompletionItem));
+    // @ts-ignore
+    get detail() {
+        return this.parameter.name;
+    }
+    // @ts-ignore
+    get documentation() {
+        return "Of value : " + this.parameter.value;
+    }
+}
 exports.ParameterCompletionItem = ParameterCompletionItem;
+//# sourceMappingURL=ParameterCompletionItem.js.map

@@ -1,26 +1,25 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-var vscode = require("vscode");
-var fs = require("graceful-fs");
-var stripJsonComments = require("strip-json-comments");
-var ComposerJSON = /** @class */ (function () {
-    function ComposerJSON() {
-    }
-    ComposerJSON.prototype.initialize = function () {
-        return new Promise(function (resolve, reject) {
+exports.ComposerJSON = void 0;
+const vscode = require("vscode");
+const fs = require("graceful-fs");
+const stripJsonComments = require("strip-json-comments");
+class ComposerJSON {
+    initialize() {
+        return new Promise((resolve, reject) => {
             if (vscode.workspace.workspaceFolders === undefined) {
                 reject("No workspace folder opened");
             }
-            vscode.workspace.findFiles("**/composer.json").then(function (uris) {
+            vscode.workspace.findFiles("**/composer.json").then(uris => {
                 if (uris.length == 0) {
                     reject("No composer.json file detected in the current workspace");
                 }
                 else {
-                    uris.forEach(function (uri) {
-                        var composerObj = JSON.parse(stripJsonComments(fs.readFileSync(uri.fsPath).toString()));
+                    uris.forEach(uri => {
+                        let composerObj = JSON.parse(stripJsonComments(fs.readFileSync(uri.fsPath).toString()));
                         if (composerObj.require !== undefined) {
-                            Object.keys(composerObj.require).forEach(function (key) {
-                                if (key === "symfony/symfony" || key == "symfony/framework-bundle" || key === "symfony/flex") {
+                            Object.keys(composerObj.require).forEach(key => {
+                                if (key === "symfony/symfony" || key == "symfony/framework-bundle") {
                                     resolve({
                                         symfonyVersion: parseInt(composerObj.require[key].match(/\d/)),
                                         uri: uri
@@ -33,7 +32,7 @@ var ComposerJSON = /** @class */ (function () {
                 }
             });
         });
-    };
-    return ComposerJSON;
-}());
+    }
+}
 exports.ComposerJSON = ComposerJSON;
+//# sourceMappingURL=ComposerJSON.js.map
