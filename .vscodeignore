@@ -1,7 +1,0 @@
-.devcontainer/
-.github/
-.vscode/
-src/
-.git*
-yarn.lock
-*.vsix
