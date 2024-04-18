@@ -3,20 +3,20 @@ import { Parameter } from "../../symfony/Parameter";
 import { AbstractContainerTreeItem } from "./AbstractContainerTreeItem";
 
 export class ParameterTreeItem extends AbstractContainerTreeItem {
-    private _parameter: Parameter
+    private _parameter: Parameter;
 
     constructor(
         parameter: Parameter
     ) {
-        super(parameter.name, vscode.TreeItemCollapsibleState.Collapsed)
-        this._parameter = parameter
+        super(parameter.name, vscode.TreeItemCollapsibleState.Collapsed);
+        this._parameter = parameter;
     }
     // @ts-ignore
     get tooltip() {
-        return this._parameter.value
+        return this._parameter.value;
     }
 
     get childrenItems(): vscode.TreeItem[] {
-        return [new vscode.TreeItem("Value : " + this._parameter.value, vscode.TreeItemCollapsibleState.None)]
+        return [new vscode.TreeItem("Value : " + this._parameter.value, vscode.TreeItemCollapsibleState.None)];
     }
 }

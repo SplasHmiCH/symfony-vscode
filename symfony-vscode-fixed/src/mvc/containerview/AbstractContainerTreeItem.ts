@@ -1,9 +1,9 @@
-import * as vscode from "vscode"
+import * as vscode from "vscode";
 
 export abstract class AbstractContainerTreeItem extends vscode.TreeItem {
     constructor(label: string, state: vscode.TreeItemCollapsibleState) {
-        super(label, state)
+        super(label, state);
     }
 
-    abstract get childrenItems(): vscode.TreeItem[]
+    abstract get childrenItems(): vscode.TreeItem[];
 }

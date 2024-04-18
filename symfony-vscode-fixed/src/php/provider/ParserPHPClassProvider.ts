@@ -1,15 +1,15 @@
-import * as vscode from "vscode"
-import { PHPClassProviderInterface } from "./PHPClassProviderInterface"
-import { PHPClass } from "../PHPClass"
-import engine from 'php-parser'
+import * as vscode from "vscode";
+import { PHPClassProviderInterface } from "./PHPClassProviderInterface";
+import { PHPClass } from "../PHPClass";
+import { Engine } from 'php-parser';
 import { readFile } from "graceful-fs";
 import { PromiseUtils } from "../PromiseUtils";
 import { PHPUse } from "../PHPUse";
 
 interface PHPParser {
-    parseEval(code: String|Buffer): PHPParser_Item
-    parseCode(code: String|Buffer, filename?: String): PHPParser_Item
-    tokenGetAll(code: String|Buffer): PHPParser_Item
+    parseEval(code: String | Buffer): PHPParser_Item
+    parseCode(code: String | Buffer, filename?: String): PHPParser_Item
+    tokenGetAll(code: String | Buffer): (string | string[])[]
 }
 
 interface PHPParser_Item {
@@ -40,133 +40,133 @@ interface PHPParser_Position {
 
 export class ParserPHPClassProvider implements PHPClassProviderInterface {
 
-    protected _engine: PHPParser
-    protected _configuration = vscode.workspace.getConfiguration("symfony-vscode")
+    protected _engine: PHPParser;
+    protected _configuration = vscode.workspace.getConfiguration("symfony-vscode");
 
     constructor() {
-        this._engine = new engine({
+        this._engine = new Engine({
             parser: {
                 php7: true
             },
             ast: {
-              withPositions: true
+                withPositions: true
             }
-        })
+        });
     }
 
     canUpdateAllUris(): boolean {
-        return true
+        return true;
     }
 
     canUpdateUri(uri: vscode.Uri): boolean {
-        return true
+        return true;
     }
 
     updateAllUris(): Promise<PHPClass[]> {
         return new Promise((resolve, reject) => {
             vscode.workspace.findFiles("**/*.php").then(uris => {
-                let ps = []
+                let ps = [];
                 uris.forEach(uri => {
-                    ps.push(() => this.updateUri(uri))
-                })
+                    ps.push(() => this.updateUri(uri));
+                });
                 PromiseUtils.throttleActions(ps, this._getParserThrottle()).then(phpClassesArray => {
-                    let resultArray: PHPClass[] = []
+                    let resultArray: PHPClass[] = [];
                     phpClassesArray.map(phpClasses => {
                         let filteredArray: PHPClass[] = phpClasses.filter(phpClass => {
-                            return phpClass !== null
-                        })
-                        resultArray = resultArray.concat(filteredArray)
-                    })
-                    resolve(resultArray)
+                            return phpClass !== null;
+                        });
+                        resultArray = resultArray.concat(filteredArray);
+                    });
+                    resolve(resultArray);
                 }).catch(reason => {
-                    reject(reason)
-                })
-            })
-        })
+                    reject(reason);
+                });
+            });
+        });
     }
 
     updateUri(uri: vscode.Uri): Promise<PHPClass[]> {
         return new Promise<PHPClass[]>((resolve) => {
             readFile(uri.fsPath, (err, data) => {
-                if(err) {
-                    resolve([])
+                if (err) {
+                    resolve([]);
                 } else {
                     try {
-                        let ast = this._engine.parseCode(data.toString())
-                        resolve(this._hydratePHPClass(ast, uri))
-                    } catch(e) {
-                        resolve([])
+                        let ast = this._engine.parseCode(data.toString());
+                        resolve(this._hydratePHPClass(ast, uri));
+                    } catch (e) {
+                        resolve([]);
                     }
                 }
-            })
-        })
+            });
+        });
     }
 
     protected _hydratePHPClass(ast: PHPParser_Item, uri: vscode.Uri): PHPClass[] {
         try {
-            let result: PHPClass[] = []
-            let children: Array<PHPParser_Item> = ast.children
-            let nextElementsToProcess: Array<PHPParser_Item> = children
-            let currentElement: PHPParser_Item = null
-            let currentNamespace: String = null
-            let uses: PHPUse[] = []
-            while(nextElementsToProcess.length > 0) {
-                currentElement = nextElementsToProcess.shift()
-                if(currentElement.kind === "namespace") {
-                    currentNamespace = <string>currentElement.name
-                    nextElementsToProcess = currentElement.children
+            let result: PHPClass[] = [];
+            let children: Array<PHPParser_Item> = ast.children;
+            let nextElementsToProcess: Array<PHPParser_Item> = children;
+            let currentElement: PHPParser_Item = null;
+            let currentNamespace: String = null;
+            let uses: PHPUse[] = [];
+            while (nextElementsToProcess.length > 0) {
+                currentElement = nextElementsToProcess.shift();
+                if (currentElement.kind === "namespace") {
+                    currentNamespace = <string>currentElement.name;
+                    nextElementsToProcess = currentElement.children;
                 }
-                if(currentElement.kind === "usegroup") {
-                    uses = uses.concat(this._processUseGroup(currentElement))
+                if (currentElement.kind === "usegroup") {
+                    uses = uses.concat(this._processUseGroup(currentElement));
                 }
-                if(currentElement.kind === "class" || currentElement.kind === "interface") {
-                    result.push(this._processClass(currentElement, uri, currentNamespace))
+                if (currentElement.kind === "class" || currentElement.kind === "interface") {
+                    result.push(this._processClass(currentElement, uri, currentNamespace));
                 }
             }
 
             result.forEach(phpClass => {
-                phpClass.uses = uses
-            })
+                phpClass.uses = uses;
+            });
 
-            return result
+            return result;
         } catch (e) {
-            return []
+            return [];
         }
     }
 
     protected _processClass(element: PHPParser_Item, uri: vscode.Uri, namespace?: String): PHPClass {
-        let fullName = null
-        if(typeof element.name === "object") {
-            fullName = <string>element.name.name
-        } else if(typeof element.name === "string") {
-            fullName = element.name
+        let fullName = null;
+        if (typeof element.name === "object") {
+            fullName = <string>element.name.name;
+        } else if (typeof element.name === "string") {
+            fullName = element.name;
         }
-        if(namespace) {
-            fullName = namespace + '\\' + fullName
+        if (namespace) {
+            fullName = namespace + '\\' + fullName;
         }
-        let phpClass = new PHPClass(fullName, uri)
+        let phpClass = new PHPClass(fullName, uri);
         element.body.forEach(classElement => {
-            if(classElement.kind === "method") {
-                phpClass.addMethod(<string>(<PHPParser_Item>classElement.name).name)
+            if (classElement.kind === "method") {
+                phpClass.addMethod(<string>(<PHPParser_Item>classElement.name).name);
             }
-        })
+        });
         phpClass.classPosition = new vscode.Position(
             element.loc.start.line, element.loc.start.column
-        )
-        return phpClass
+        );
+        return phpClass;
     }
 
     protected _processUseGroup(element: PHPParser_Item): PHPUse[] {
-        let result: PHPUse[] = []
+        let result: PHPUse[] = [];
 
         element.items.forEach(item => {
-            result.push(new PHPUse(item.name, item.alias))
-        })
+            result.push(new PHPUse(item.name, item.alias));
+        });
 
-        return result
+        return result;
     }
 
     private _getParserThrottle(): number {
-        return this._configuration.get("phpParserThrottle")
+        return this._configuration.get("phpParserThrottle");
     }
 }

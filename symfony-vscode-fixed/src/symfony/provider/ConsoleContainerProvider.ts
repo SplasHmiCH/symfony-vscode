@@ -1,6 +1,6 @@
-import * as vscode from "vscode"
-import * as path from "path"
-import * as jsonStripComments from "strip-json-comments"
+import * as vscode from "vscode";
+import * as path from "path";
+import * as jsonStripComments from "strip-json-comments";
 
 import { ContainerProviderInterface } from "./ContainerProviderInterface";
 import { ServiceDefinition } from "../ServiceDefinition";
@@ -12,19 +12,19 @@ import { resolve } from "url";
 
 export class ConsoleContainerProvider implements ContainerProviderInterface {
 
-    private _configuration = vscode.workspace.getConfiguration("symfony-vscode")
-    private _composerJson: ComposerJSON = new ComposerJSON()
+    private _configuration = vscode.workspace.getConfiguration("symfony-vscode");
+    private _composerJson: ComposerJSON = new ComposerJSON();
 
     canProvideServiceDefinitions(): boolean {
-        return true
+        return true;
     }
 
     canProvideRouteDefinitions(): boolean {
-        return true
+        return true;
     }
 
     canProvideParameters(): boolean {
-        return true
+        return true;
     }
 
     async provideServiceDefinitions(): Promise<ServiceDefinition[]> {
@@ -64,161 +64,161 @@ export class ConsoleContainerProvider implements ContainerProviderInterface {
 
     provideRouteDefinitions(): Promise<RouteDefinition[]> {
         return this._executeCommand<RouteDefinition>(["debug:router"], (obj) => {
-            let result: RouteDefinition[] = []
+            let result: RouteDefinition[] = [];
 
             Object.keys(obj).forEach(key => {
                 if (!this._matchRoutesFilters(key, obj[key].path)) {
-                    result.push(new RouteDefinition(key, obj[key].path, obj[key].method, obj[key].defaults._controller))
+                    result.push(new RouteDefinition(key, obj[key].path, obj[key].method, obj[key].defaults._controller));
                 }
-            })
+            });
 
-            return result
-        })
+            return result;
+        });
     }
 
     provideParameters(): Promise<Parameter[]> {
         return this._executeCommand<Parameter>(["debug:container", "--parameters"], (obj) => {
-            let result: Parameter[] = []
+            let result: Parameter[] = [];
 
             Object.keys(obj).forEach(key => {
                 if (!this._matchParametersFilters(key)) {
-                    result.push(new Parameter(key, obj[key]))
+                    result.push(new Parameter(key, obj[key]));
                 }
-            })
+            });
 
-            return result
-        })
+            return result;
+        });
     }
 
     private _executeCommand<T>(parameters: string[], cb: (obj: any) => T[]): Promise<T[]> {
         return new Promise((resolve, reject) => {
             this._getConsolePath().then(infos => {
-                let args: string[] = []
-                args.push(infos.consolePath)
-                args = args.concat(parameters)
-                args.push("--format=json")
+                let args: string[] = [];
+                args.push(infos.consolePath);
+                args = args.concat(parameters);
+                args.push("--format=json");
 
-                let buffer: string = ""
-                let errorBuffer: string = ""
+                let buffer: string = "";
+                let errorBuffer: string = "";
                 try {
-                    let executable: string = this._getPHPExecutablePath()
-                    let options: SpawnOptions = { cwd: infos.cwd }
+                    let executable: string = this._getPHPExecutablePath();
+                    let options: SpawnOptions = { cwd: infos.cwd };
 
-                    let shellExecutable: string | boolean = false
+                    let shellExecutable: string | boolean = false;
                     if (shellExecutable = this._getShellExecutable()) {
-                        executable = this._getShellCommand()
-                        options = { shell: shellExecutable }
+                        executable = this._getShellCommand();
+                        options = { shell: shellExecutable };
                     }
 
-                    let process = spawn(executable, args, options)
+                    let process = spawn(executable, args, options);
                     process.stdout.on('data', (data) => {
-                        buffer += data
-                    })
+                        buffer += data;
+                    });
                     process.stderr.on('data', (data) => {
-                        errorBuffer += data
-                    })
+                        errorBuffer += data;
+                    });
                     process.on('error', (err) => {
                         if (this._showErrors) {
-                            reject(err.message)
+                            reject(err.message);
                         } else {
-                            resolve([])
+                            resolve([]);
                         }
-                    })
+                    });
                     process.on('close', (code) => {
                         if (code !== 0) {
                             if (this._showErrors) {
-                                reject(errorBuffer)
+                                reject(errorBuffer);
                             } else {
-                                resolve([])
+                                resolve([]);
                             }
                         } else {
                             try {
-                                let obj = JSON.parse(jsonStripComments(buffer))
-                                resolve(cb(obj))
+                                let obj = JSON.parse(jsonStripComments(buffer));
+                                resolve(cb(obj));
                             } catch (e) {
                                 if (this._showErrors) {
-                                    reject(e)
+                                    reject(e);
                                 } else {
-                                    resolve([])
+                                    resolve([]);
                                 }
                             }
                         }
-                    })
+                    });
                 } catch (e) {
                     if (this._showErrors) {
-                        reject(e)
+                        reject(e);
                     } else {
-                        resolve([])
+                        resolve([]);
                     }
                 }
             }).catch(reason => {
-                reject(reason)
-            })
-        })
+                reject(reason);
+            });
+        });
     }
 
     private _getConsolePath(): Promise<{ consolePath: string, cwd: string }> {
         return new Promise((resolve, reject) => {
             this._composerJson.initialize().then(infos => {
-                let customConsolePath: string = this._configuration.get("consolePath")
-                let consolePath: string = ""
+                let customConsolePath: string = this._configuration.get("consolePath");
+                let consolePath: string = "";
                 if (customConsolePath) {
-                    consolePath = customConsolePath
+                    consolePath = customConsolePath;
                 } else {
                     consolePath = "bin/console";
                 }
                 resolve({
                     consolePath: consolePath,
                     cwd: path.dirname(infos.uri.fsPath)
-                })
-            }).catch(reason => reject(reason))
-        })
+                });
+            }).catch(reason => reject(reason));
+        });
     }
 
     private _getPHPExecutablePath(): string {
-        return this._configuration.get("phpExecutablePath")
+        return this._configuration.get("phpExecutablePath");
     }
 
     private _getShellExecutable(): string {
-        return this._configuration.get("shellExecutable")
+        return this._configuration.get("shellExecutable");
     }
 
     private _getShellCommand(): string {
-        return this._configuration.get("shellCommand")
+        return this._configuration.get("shellCommand");
     }
 
     private _showErrors(): boolean {
-        return this._configuration.get("showConsoleErrors")
+        return this._configuration.get("showConsoleErrors");
     }
 
     private _matchServicesFilters(serviceId: string, serviceClassName: string): boolean {
-        let filters: object = this._configuration.get("servicesFilters")
+        let filters: object = this._configuration.get("servicesFilters");
         return Object.keys(filters).some(filter => {
             if (filters[filter] === "id" && serviceId != null && serviceId.match(new RegExp(filter))) {
-                return true
+                return true;
             } else if (filters[filter] === "class" && serviceClassName != null && serviceClassName.match(new RegExp(filter))) {
-                return true
+                return true;
             }
-            return false
-        })
+            return false;
+        });
     }
 
     private _matchRoutesFilters(routeId: string, routePath: string): boolean {
-        let filters: object = this._configuration.get("routesFilters")
+        let filters: object = this._configuration.get("routesFilters");
         return Object.keys(filters).some(filter => {
             if (filters[filter] === "id" && routeId != null && routeId.match(new RegExp(filter))) {
-                return true
+                return true;
             } else if (filters[filter] === "path" && routePath != null && routePath.match(new RegExp(filter))) {
-                return true
+                return true;
             }
-            return false
-        })
+            return false;
+        });
     }
 
     private _matchParametersFilters(parameterId: string): boolean {
-        let filters: Array<string> = this._configuration.get("parametersFilters")
+        let filters: Array<string> = this._configuration.get("parametersFilters");
         return filters.some(filter => {
-            return parameterId != null && (parameterId.match(new RegExp(filter)) !== null)
-        })
+            return parameterId != null && (parameterId.match(new RegExp(filter)) !== null);
+        });
     }
 }

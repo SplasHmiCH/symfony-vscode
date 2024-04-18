@@ -4,9 +4,9 @@ import { ServiceDefinition } from "../../../symfony/ServiceDefinition";
 export class PHPServiceDefinitionProvider extends AbstractServiceDefinitionProvider {
     acceptServiceDefinition(hoveredWord: string, serviceDefinition: ServiceDefinition): boolean {
         if(serviceDefinition.isServiceIdAClassName()) {
-            return false
+            return false;
         } else {
-            return hoveredWord === serviceDefinition.id
+            return hoveredWord === serviceDefinition.id;
         }
     }
 }
