@@ -21,15 +21,12 @@ jobs:
 
       - name: Go to correct folder
         run: cd symfony-vscode-fixed
+
+      - name: list folder
+        run: ls -la
         
       - name: Install dependencies
         run: yarn install
-
-      - name: Compile
-        run: yarn run vscode:prepublish
-
-      - name: Install VSCE
-        run: yarn global add vsce
 
       - name: Package Extention
         run: vsce package
