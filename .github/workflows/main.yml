@@ -16,6 +16,9 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
+      - name: Go to correct folder
+        run: cd symfony-vscode-fixed
+        
       - name: Install dependencies
         run: yarn install
 
