@@ -27,7 +27,7 @@
         {
             "label": "copyDemoData",
             "type": "shell",
-            "command": "cp -r /workspaces/symfony-vscode-fixed/demo-data/* /home/node",
+            "command": "cp -r /workspaces/symfony-vscode-fixed/demo-data /home/node",
             "problemMatcher": []
         }
     ]
