@@ -1,7 +1,7 @@
 name: Publish VSCode Extension
 
 on:
-  push:
+  create:
     tags:
       - 'v*'
     branches:
@@ -16,6 +16,9 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
+      - name: Go to correct folder
+        run: cd symfony-vscode-fixed
+        
       - name: Install dependencies
         run: yarn install
 
@@ -25,5 +28,8 @@ jobs:
       - name: Install VSCE
         run: yarn global add vsce
 
+      - name: Package Extention
+        run: vsce package
+        
       - name: Publish
         run: vsce publish -p ${{ secrets.VSCE_PAT }}
