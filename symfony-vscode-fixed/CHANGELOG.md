@@ -11,7 +11,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [unreleased]
+## [0.0.4]
 
 ### Added
 
@@ -20,27 +20,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `.gitattributes` from the Original Project
 - `.devcontainer/` added this Dev Enviroment
 - `.vscode/` added VSCode config
-- `.github/` added dependabot config
-- `"@vscode/vsce": "^2.24.0"`, `"@vscode/test-electron": "^2.3.0"` to dev Dependencys
-- Added these scripts to `package.json`:
-  - `"vscode:package": "vsce package"`
-  - `"vscode:prepublish": "yarn run compile"`
-  - `"compile": "tsc -p ./"`
-  - `"watch": "tsc -watch -p ./"`
-  - `"postinstall": "yarn ./node_modules/vscode/bin/install"`
-  - `"test": "yarn run compile && yarn ./node_modules/vscode/bin/test"`
-  - `"publish": "vsce publish"`
+- `.github/` added dependabot and workflow config
 
 ### Changed
 
 - recreated `node_modules` to clear old not used dependencys
-- `.vsixmanifest`: Extention Version to 0.0.4; changed minimal VSCode engine to ^1.76.0
 - Keep a Changelog version to [1.1.0](https://keepachangelog.com/en/1.1.0/)
-- updated dev dependency Versions to:
-  - `"@types/mocha": "^10.0.1"`
-  - `"@types/node": "^18.11.9"`
-  - `"@types/vscode": "^1.76.0"`
-  - `"typescript": "^5.4.3"`
+- updated dev dependency Versions to
+- package versions of the `package.json`
+- moved extention related files in a subfolder
 
 ### Fixed
 
