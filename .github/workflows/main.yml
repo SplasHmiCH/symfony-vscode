@@ -18,9 +18,12 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
+
+      - name: List folder
+        run: ls -la
         
       - name: Install dependencies
-        run: yarn install
+        run: yarn install && yarn global add vsce
 
       - name: Package Extention
         run: vsce package
