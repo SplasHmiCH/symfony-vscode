@@ -1,8 +1,9 @@
 .devcontainer/
 .github/
-.vscode/
+.vscode*/
 src/
 .git*
 yarn.lock
 *.vsix
 demo-data/*
+**/*.js.map
