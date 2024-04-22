@@ -2,7 +2,7 @@
     "name": "symfony-vscode-fixed",
     "displayName": "Symfony for VSCode (fixed)",
     "description": "Debug and autocomplete of Symfony container with Symfony 3+ and Shopware Support",
-    "version": "0.0.4",
+    "version": "0.0.5",
     "publisher": "SplasHmiCH",
     "repository": {
         "url": "https://github.com/SplasHmiCH/symfony-vscode"
