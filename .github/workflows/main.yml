@@ -10,23 +10,20 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./symfony-vscode-fixed
     container:
       image: node:14-buster
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
-
-      - name: list folder
-        run: ls -la
-
-      - name: Go to correct folder
-        run: cd symfony-vscode-fixed
-
-      - name: list folder
-        run: ls -la
         
       - name: Install dependencies
-        run: yarn install
+        run: yarn install && yarn global add vsce
+
+      - name: Copy Markdown files
+        run: cp ../*.md .
 
       - name: Package Extention
         run: vsce package
