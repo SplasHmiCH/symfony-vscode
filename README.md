@@ -6,7 +6,7 @@ I fixed some bugs I encountered due to updates and changes in the way Symfony wo
 
 This extension aims to help developing Symfony**3**+ projects, by providing basic autocompletion and visualization of the Symfony container.
 
-![Autocomplete](https://github.com/SplasHmiCH/splashmich.symfony-vscode/blob/main/media/autocomplete.gif?raw=true)
+![Autocomplete](https://github.com/SplasHmiCH/symfony-vscode/blob/0ebff9ba61b50151db32e80cb698e12dfae2118b/symfony-vscode-fixed/media/autocomplete.gif?raw=true)
 
 ## Features
 
@@ -17,7 +17,7 @@ This extension provides the following features :
 * Go to implementation of a service
 * A custom view to visualize the current project container, with services, routes and parameters
 
-![Debug view](https://github.com/SplasHmiCH/splashmich.symfony-vscode/blob/main/media/view.gif?raw=true)
+![Debug view](https://github.com/SplasHmiCH/symfony-vscode/blob/0ebff9ba61b50151db32e80cb698e12dfae2118b/symfony-vscode-fixed/media/view.gif?raw=true)
 
 ## How does it works ?
 
